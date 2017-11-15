@@ -1,0 +1,32 @@
+# For Go projects
+# complie files
+*.o
+*.a
+*.so
+*.dll
+
+# binary files ,create by go build 
+*.exe
+*.dylib
+
+# logs files
+*.log
+
+# cache data 
+*.d
+
+# test cache data
+*.test
+
+# databases 
+*.db
+
+# folders 
+_obj
+_test
+
+# JetBrains files
+.idea/
+
+# output files
+*.out
