@@ -9,25 +9,30 @@ package cnt;
 
 //请求
 message CntRq { 
-    int32 num = 1; //计数值
+	string uid = 1; //用户编号
+    string num = 2; //计数值
 }
 
 //响应
 message CntRp {
-    int32 num = 1; //计数值
+	string errcode = 1; //错误码
+	string errmsg = 2;//错误信息
+    string num = 3; //计数值
 }
 
 //服务
 service Counter {
 	//计数器自增
+	//@uid:用户编号
 	//@num:需要增加的计数值
 	rpc Add(CntRq) returns (CntRp);
 	
-	//计数器自减
-	//@num:需要减少的计数值
-	rpc Sub(CntRq) returns (CntRp);
+	//计数器删除
+	//@uid:用户编号
+	rpc Del(CntRq) returns (CntRp);
 	
 	//计数器值获取
+	//@uid:用户编号
 	//@return: num
 	rpc Get(CntRq) returns (CntRp);
 }
