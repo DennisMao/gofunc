@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"flag"
 	"log"
 	"runtime"
 
@@ -26,19 +27,24 @@ func main() {
 
 	logs.Debug("RPC COUNTER 客户端")
 
+	_ = flag.String("uid", RPC_COUNTER_UID, "User Id for remote counter")
+	numUser := flag.String("num", "1", "Number")
+
+	logs.Debug("默认测试")
+
 	//测试RPC COUNTER服务
 	err, num := RPC_Counter_Get()
 	if err != nil {
-		logs.Debug("获取计数值失败，原因:" + err.Error())
+		logs.Debug("获取计数值失败失败，原因:" + err.Error())
 	} else {
 		logs.Debug("获取到计数值=", num)
 	}
 
-	err = RPC_Counter_Add("1")
+	err = RPC_Counter_Add(*numUser)
 	if err != nil {
-		logs.Debug("获取计数值自增，原因:" + err.Error())
+		logs.Debug("操作失败，原因:" + err.Error())
 	} else {
-		logs.Debug("计数值自增成功")
+		logs.Debug("操作成功")
 	}
 
 	//测试RPC COUNTER服务
@@ -48,6 +54,7 @@ func main() {
 	} else {
 		logs.Debug("获取到计数值=", num)
 	}
+
 }
 
 // RPC Counter Add

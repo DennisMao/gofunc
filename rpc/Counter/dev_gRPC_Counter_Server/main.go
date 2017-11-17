@@ -5,7 +5,7 @@ import (
 	"runtime"
 
 	"cnt"
-	"dev_gPPC_Counter_Server/models/counter"
+	"dev_gRPC_Counter_Server/models/counter"
 
 	"github.com/astaxie/beego/logs"
 	"golang.org/x/net/context"
