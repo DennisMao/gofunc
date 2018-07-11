@@ -7,7 +7,8 @@
 |:-|:-|:-|:-|
 |syscall|调用动态链接库|-|[Demo](/loaddll)|
 |plugin|调用动态链接库|-|[Demo](/plugin)|
-|testing|单元测试+性能压测|-|[单元测试](/unittest),[Demo](/benchmark)|
+|testing|单元测试|-|[Demo](/unittest)|
+|testing|性能压测|-|[Demo](/benchmark)|
 
 ## 开源库
 
