@@ -30,6 +30,7 @@ func main() {
 	cluster := flag.String("cluster", "http://127.0.0.1:9021", "comma separated cluster peers") //集群地址,例:http://ip:123,http://ip:234
 	id := flag.Int("id", 1, "node ID")                                                          //当前节点编号
 	kvport := flag.Int("port", 9121, "key-value server port")                                   //Kv数据库服务端口,API服务端口
+	dataDir := flag.String("datadir", "tmp", "data dir")                                        //数据文件目录   $DataDir/member/snap  $DataDir/member/wal
 	join := flag.Bool("join", false, "join an existing cluster")
 	flag.Parse()
 
@@ -41,7 +42,7 @@ func main() {
 	// raft provides a commit stream for the proposals from the http api
 	var kvs *kvstore.KvStore
 	getSnapshot := func() ([]byte, error) { return kvs.GetSnapshot() }
-	commitC, errorC, snapshotterReady := raft.NewRaftNode(*id, strings.Split(*cluster, ","), *join, getSnapshot, proposeC, confChangeC)
+	commitC, errorC, snapshotterReady := raft.NewRaftNode(*id, *dataDir, strings.Split(*cluster, ","), *join, getSnapshot, proposeC, confChangeC)
 
 	kvs = kvstore.NewKvStore(<-snapshotterReady, proposeC, commitC, errorC)
 
