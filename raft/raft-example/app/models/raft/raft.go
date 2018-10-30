@@ -21,6 +21,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"path/filepath"
 	"strconv"
 	"time"
 
@@ -46,17 +47,17 @@ type raftNode struct {
 	commitC     chan<- *string           // entries committed to log (k,v)
 	errorC      chan<- error             // errors from raft session
 
-	id          int      // client ID for raft session
-	peers       []string // raft peer URLs
-	join        bool     // node is joining an existing cluster
-	waldir      string   // path to WAL directory
-	snapdir     string   // path to snapshot directory
-	getSnapshot func() ([]byte, error)
-	lastIndex   uint64 // index of log at start
+	id          int                    // session raft客户端编号
+	peers       []string               // raft需要监视的地址(集群地址)
+	join        bool                   // 当前节点是否需要加入现有集群
+	waldir      string                 // WAL 文件保存目录
+	snapdir     string                 // 快照 文件保存目录
+	getSnapshot func() ([]byte, error) // 获取快照的函数(自定义实现)
+	lastIndex   uint64                 // 起始日志的序号
 
 	confState     raftpb.ConfState
-	snapshotIndex uint64
-	appliedIndex  uint64
+	snapshotIndex uint64 // 快照中日志序号
+	appliedIndex  uint64 // 当前已提交的日志序号
 
 	// raft backing for the commit/error channel
 	node        raft.Node
@@ -66,7 +67,7 @@ type raftNode struct {
 	snapshotter      *snap.Snapshotter
 	snapshotterReady chan *snap.Snapshotter // signals when snapshotter is ready
 
-	snapCount uint64
+	snapCount uint64 // 创建快照的阈值,当现在日志记录序号-已有日志序号>快照阈值时候会自动触发快照程序
 	transport *rafthttp.Transport
 	stopc     chan struct{} // signals proposal channel closed
 	httpstopc chan struct{} // signals http server to shutdown
@@ -80,7 +81,21 @@ var defaultSnapshotCount uint64 = 10000
 // provided the proposal channel. All log entries are replayed over the
 // commit channel, followed by a nil message (to indicate the channel is
 // current), then new log entries. To shutdown, close proposeC and read errorC.
-func NewRaftNode(id int, peers []string, join bool, getSnapshot func() ([]byte, error), proposeC <-chan string,
+//
+// NewRaftNode 实例化一个raft实例,并返回一个`已提交的日志实体的通道(<-chan *string)`和`错误返回通道(<-chan error)`.
+// 日志更新的需求将会通过`需求通道(proposeC)`来提交.所有日志实体都会依赖`提交通道`来提交，通过一个空的实体来表明通道的活跃,然后再发送真正的日志实体。
+// 当需要关闭时候,需要先关闭`proposeC`然后去读取`errorC`返回的状态。
+//
+// @id: 当前节点编号
+// @peers:
+// @join: 是否加入现有的节点
+// @getSnapshot: 获取已有快照(恢复)
+// @proposeC: 提价通道,用于新增/修改日志实体的提交
+// @confChangeC: 配置变更通道,用于节点状态更新(新增,删除,更新,增加Learner节点)
+//
+// @return <-chan *string: 返回通道,用于返回已提交的日志实体
+// @return <-chan error: 返回错误通道,用于返回执行过程中的错误信息
+func NewRaftNode(id int, dataDir string, peers []string, join bool, getSnapshot func() ([]byte, error), proposeC <-chan string,
 	confChangeC <-chan raftpb.ConfChange) (<-chan *string, <-chan error, <-chan *snap.Snapshotter) {
 
 	commitC := make(chan *string)
@@ -94,8 +109,8 @@ func NewRaftNode(id int, peers []string, join bool, getSnapshot func() ([]byte, 
 		id:          id,
 		peers:       peers,
 		join:        join,
-		waldir:      fmt.Sprintf("raftexample-%d", id),
-		snapdir:     fmt.Sprintf("raftexample-%d-snap", id),
+		waldir:      filepath.Join(dataDir, fmt.Sprint(id), "member", "wal"),
+		snapdir:     filepath.Join(dataDir, fmt.Sprint(id), "member", "snap"),
 		getSnapshot: getSnapshot,
 		snapCount:   defaultSnapshotCount,
 		stopc:       make(chan struct{}),
@@ -201,7 +216,7 @@ func (rc *raftNode) loadSnapshot() *raftpb.Snapshot {
 // openWAL returns a WAL ready for reading.
 func (rc *raftNode) openWAL(snapshot *raftpb.Snapshot) *wal.WAL {
 	if !wal.Exist(rc.waldir) {
-		if err := os.Mkdir(rc.waldir, 0750); err != nil {
+		if err := os.MkdirAll(rc.waldir, 0750); err != nil {
 			log.Fatalf("raftexample: cannot create dir for wal (%v)", err)
 		}
 
@@ -226,6 +241,7 @@ func (rc *raftNode) openWAL(snapshot *raftpb.Snapshot) *wal.WAL {
 }
 
 // replayWAL replays WAL entries into the raft instance.
+//
 func (rc *raftNode) replayWAL() *wal.WAL {
 	log.Printf("replaying WAL of member %d", rc.id)
 	snapshot := rc.loadSnapshot()
@@ -261,7 +277,7 @@ func (rc *raftNode) writeError(err error) {
 
 func (rc *raftNode) startRaft() {
 	if !fileutil.Exist(rc.snapdir) {
-		if err := os.Mkdir(rc.snapdir, 0750); err != nil {
+		if err := os.MkdirAll(rc.snapdir, 0750); err != nil {
 			log.Fatalf("raftexample: cannot create dir for snapshot (%v)", err)
 		}
 	}
@@ -455,6 +471,11 @@ func (rc *raftNode) serveChannels() {
 	}
 }
 
+// 启动raft服务
+//
+// 1.解析节点地址,找到集群地址中对应节点位置的地址 peer[id-1]
+// 2.启动tcp服务,监听
+// 3.来请求自动设置3分钟的keepAlive并返回连接句柄
 func (rc *raftNode) serveRaft() {
 	url, err := url.Parse(rc.peers[rc.id-1])
 	if err != nil {

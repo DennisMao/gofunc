@@ -15,9 +15,11 @@
 package http
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
+	nUrl "net/url"
 	"strconv"
 
 	"raft-example/app/models/kvstore"
@@ -72,6 +74,13 @@ func (h *httpKVAPI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Printf("Failed to read on POST (%v)\n", err)
 			http.Error(w, "Failed on POST", http.StatusBadRequest)
+			return
+		}
+
+		_, err = nUrl.Parse(string(url))
+		if err != nil {
+			log.Printf("Invalid node url on (%v)\n", err)
+			http.Error(w, fmt.Sprintf("Invalid node url on (%v)", string(url)), http.StatusBadRequest)
 			return
 		}
 
