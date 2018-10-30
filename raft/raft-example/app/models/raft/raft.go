@@ -21,6 +21,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"path/filepath"
 	"strconv"
 	"time"
 
@@ -59,7 +60,7 @@ type raftNode struct {
 	appliedIndex  uint64 // 当前已提交的日志序号
 
 	// raft backing for the commit/error channel
-	node        raft.Node 
+	node        raft.Node
 	raftStorage *raft.MemoryStorage
 	wal         *wal.WAL
 
@@ -108,8 +109,8 @@ func NewRaftNode(id int, dataDir string, peers []string, join bool, getSnapshot 
 		id:          id,
 		peers:       peers,
 		join:        join,
-		waldir:      fmt.Sprintf("%s/%d/member/wal", dataDir, id),
-		snapdir:     fmt.Sprintf("%s/%d/member/snap", dataDir, id),
+		waldir:      filepath.Join(dataDir, fmt.Sprint(id), "member", "wal"),
+		snapdir:     filepath.Join(dataDir, fmt.Sprint(id), "member", "snap"),
 		getSnapshot: getSnapshot,
 		snapCount:   defaultSnapshotCount,
 		stopc:       make(chan struct{}),
@@ -240,7 +241,7 @@ func (rc *raftNode) openWAL(snapshot *raftpb.Snapshot) *wal.WAL {
 }
 
 // replayWAL replays WAL entries into the raft instance.
-// 
+//
 func (rc *raftNode) replayWAL() *wal.WAL {
 	log.Printf("replaying WAL of member %d", rc.id)
 	snapshot := rc.loadSnapshot()
