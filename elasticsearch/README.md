@@ -8,4 +8,4 @@
 + Scroll
 + SearchAfter
 
-[代码示例](./paging/main.go)
+[代码示例](./main.go)
