@@ -16,7 +16,7 @@
 |:-|:-|:-|:-|
 |[xlsx](https://github.com/tealeg/xlsx)|Excel解析库|-|[Demo]()|
 |[gRPC](https://github.com/grpc/go-grpc)|支持多语言的RPC库|-|[Demo](/rpc)|
-|[plot](https://gonum.org/v1/plot)|类似mathlab的polt曲线图生成工具]|-|[Demo](/plot)|
+|[plot](https://gonum.org/v1/plot)|类似mathlab的polt曲线图生成工具|-|[Demo](/plot)|
 |[etcd/raft](https://github.com/etcd-io/etcd/raft)|分布式一致性共识算法实现的简易kv数据库|-|[Demo](/raft/raft-example)|
 |[google/btree](https://github.com/google/btree)|B树的Go实现|-|[Demo](/google/btree-example)|
 |[elastic.v5](https://github.com/olivere/elastic)|elasticsearch链接库|-|[Demo](/elasticsearch/README.md)|
