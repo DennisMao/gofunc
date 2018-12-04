@@ -19,4 +19,4 @@
 |[plot](https://gonum.org/v1/plot)|类似mathlab的polt曲线图生成工具]|-|[Demo](/plot)|
 |[etcd/raft](https://github.com/etcd-io/etcd/raft)|分布式一致性共识算法实现的简易kv数据库|-|[Demo](/raft/raft-example)|
 |[google/btree](https://github.com/google/btree)|B树的Go实现|[Demo](/google/btree-example)|
-|[elastic.v5](https://github.com/olivere/elastic)|elasticsarch链接库|[Demo](/elasticsarch/README.md)|
+|[elastic.v5](https://github.com/olivere/elastic)|elasticsarch链接库|[Demo](/elasticsearch/README.md)|
