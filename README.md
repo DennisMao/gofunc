@@ -1,7 +1,11 @@
 # goexperience
 
 ## 数据结构
+
+## 算法
+
 ## 业务相关
+
 ## 官方库
 |库名称|功能|最新版本|Demo|
 |:-|:-|:-|:-|
@@ -9,6 +13,7 @@
 |plugin|调用动态链接库|-|[Demo](/plugin)|
 |testing|单元测试|-|[Demo](/unittest)|
 |testing|性能压测|-|[Demo](/benchmark)|
+|goroutine|协程并发控制|-|[Demo](/concurrency)
 
 ## 开源库
 
@@ -20,3 +25,4 @@
 |[etcd/raft](https://github.com/etcd-io/etcd/raft)|分布式一致性共识算法实现的简易kv数据库|-|[Demo](/raft/raft-example)|
 |[google/btree](https://github.com/google/btree)|B树的Go实现|-|[Demo](/google/btree-example)|
 |[elastic.v5](https://github.com/olivere/elastic)|elasticsearch链接库|-|[Demo](/elasticsearch/README.md)|
+|[jaeger/client]()|jaeger的opentracing使用|-|[Demo](/jaeger/testUdpSender)
