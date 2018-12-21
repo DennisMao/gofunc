@@ -14,6 +14,7 @@
 |testing|单元测试|-|[Demo](/unittest)|
 |testing|性能压测|-|[Demo](/benchmark)|
 |goroutine|协程并发控制|-|[Demo](/concurrency)
+|compress/gzip|Gzip压缩解压|-|[Demo](/compress/gzip)|
 
 ## 开源库
 
