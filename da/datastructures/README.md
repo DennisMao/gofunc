@@ -2,18 +2,17 @@
 ## 树
 结构名称|功能|Demo
 :-|:-|:-
-二叉树|-|-
-B树|-|-
-AVL|-|-
-红黑树|-|-
+二叉树|-|[BinaryTree](/trees/BinaryTree)
+B树|-|[Btree](/trees/Btree)
+AVL|-|[AvlTree](/trees/AvlTree)
+红黑树|-|[RedBlackTree](/trees/RedBlackTree)
 
-## 链表
+## 线性表
 结构名称|功能|Demo
 :-|:-|:-
-链表|-|
-单向链表|-|
-双向链表|-|
-环|-|
+序列|-|[ArrayList](/lists/ArrayList)
+单(双)向链表|-|[LinkedList](/lists/LinkedList)
+环|-|[Ring](/lists/Ring)
 
 ## Map
 
