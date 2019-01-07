@@ -56,6 +56,10 @@ func (this *linkedList) Reverse() {
 
 }
 
+func (this *linkedList) Remove() {
+
+}
+
 func reverse(cur, next *Node) *Node {
 
 	var endPoint *Node
