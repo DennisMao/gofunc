@@ -1,6 +1,10 @@
 // Name: Binary tree
 package BinaryTree
 
+import (
+	"errors"
+)
+
 const (
 	CompareEqual = 1 << iota
 	CompareLess
@@ -26,50 +30,56 @@ type Node struct {
 }
 
 type BinaryTree struct {
-	root *Node
+	Root *Node
 }
 
 func New(i Item) *BinaryTree {
 
 	return &BinaryTree{
-		root: &Node{nil, nil, nil, i},
+		Root: &Node{nil, nil, nil, i},
 	}
 
 }
 
-func (this *BinaryTree) InsertItem(item Item) {
+func (this *BinaryTree) InsertItem(item Item) error {
+	return findInsertNode(this.Root, item)
+}
 
-	curNode := this.root
-	for {
-		if curNode.left == nil {
-			newNode := &Node{
-				parent: curNode,
-				data:   item,
-			}
-			curNode.left = newNode
-			return
-		} else {
-			curNode = curNode.left
-		}
+func findInsertNode(subNode *Node, item Item) error {
 
-		if curNode.right == nil {
-			newNode := &Node{
-				parent: curNode,
-				data:   item,
-			}
-			curNode.right = newNode
-			return
-		} else {
-			curNode = curNode.right
-		}
+	if subNode.data == item {
+		return errors.New("item exists")
 	}
+
+	if subNode.data > item {
+		if subNode.left == nil {
+			subNode.left = &Node{
+				parent: subNode,
+				data:   item,
+			}
+			return nil
+		}
+
+		findInsertNode(subNode.left, item)
+	} else {
+		if subNode.right == nil {
+			subNode.right = &Node{
+				parent: subNode,
+				data:   item,
+			}
+			return nil
+		}
+		findInsertNode(subNode.right, item)
+	}
+
+	return nil
 }
 
 func (tree *BinaryTree) SearchItem(f ItemCompare) (*Node, bool) {
-	if tree.root == nil {
+	if tree.Root == nil {
 		return nil, false
 	}
-	currentNode := tree.root
+	currentNode := tree.Root
 	for currentNode != nil {
 
 		switch f(currentNode.data) {
@@ -84,22 +94,37 @@ func (tree *BinaryTree) SearchItem(f ItemCompare) (*Node, bool) {
 	return nil, false
 }
 
+// 镜像翻转
+func (tree *BinaryTree) Mirror(subNode *Node) {
+	if subNode == nil {
+		return
+	}
+
+	subNode.left, subNode.right = subNode.right, subNode.left
+	tree.Mirror(subNode.left)
+	tree.Mirror(subNode.right)
+}
+
 // 前序
+//（1）访问根结点
+//（2）前序遍历左子树
+//（3）前序遍历右子树
 func (tree *BinaryTree) PreorderTraversal(subNode *Node, it ItemIterator) {
 	if subNode == nil {
 		return
 	}
 
 	it(subNode.data)
-
 	tree.PreorderTraversal(subNode.left, it)
 	tree.PreorderTraversal(subNode.right, it)
 
 }
 
 // 中序
+//（1）中序遍历左子树
+//（2）访问根结点
+//（3）中序遍历右子树
 func (tree *BinaryTree) InorderTraversal(subNode *Node, it ItemIterator) {
-
 	if subNode == nil {
 		return
 	}
@@ -110,16 +135,19 @@ func (tree *BinaryTree) InorderTraversal(subNode *Node, it ItemIterator) {
 }
 
 // 后序
+//（1）后序遍历左子树
+//（2）后序遍历右子树
+//（3）访问根结点
 func (tree *BinaryTree) PostorderTraversal(subNode *Node, it ItemIterator) {
 	if subNode == nil {
 		return
 	}
 
-	if subNode.right != nil {
-		tree.PostorderTraversal(subNode.right, it)
-	}
 	if subNode.left != nil {
 		tree.PostorderTraversal(subNode.left, it)
+	}
+	if subNode.right != nil {
+		tree.PostorderTraversal(subNode.right, it)
 	}
 	it(subNode.data)
 
