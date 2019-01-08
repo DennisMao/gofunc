@@ -12,7 +12,8 @@ import (
 )
 
 var (
-	testItem = []Item{"A", "B", "C", "D", "E", "F", "G"}
+	testItem       = []Item{"A", "B", "C", "D", "E", "F", "G"}
+	testRandomItem = []Item{"D", "B", "C", "F", "G", "A", "E"}
 )
 
 func NewVector() *vector {
@@ -20,6 +21,16 @@ func NewVector() *vector {
 
 	for i, _ := range testItem {
 		vector.PushBack(testItem[i])
+	}
+
+	return vector
+}
+
+func NewRandomVector() *vector {
+	vector := New()
+
+	for i, _ := range testRandomItem {
+		vector.PushBack(testRandomItem[i])
 	}
 
 	return vector
@@ -53,6 +64,10 @@ func TestInsert(t *testing.T) {
 // 遍历法
 func TestSearch(t *testing.T) {
 
+	vector := NewVector()
+	value := vector.Find(Item("A"), -1, -1)
+	assert.Equal(t, 0, value)
+
 	//assert.Equal(t, Item("DBACFE"), result)
 
 }
@@ -75,13 +90,21 @@ func TestSearchFib(t *testing.T) {
 // 起泡
 func TestSortBubble(t *testing.T) {
 
-	//assert.Equal(t, Item("DBACFE"), result)
+	vector := NewRandomVector()
+
+	assert.Equal(t, testRandomItem, vector.Array())
+	vector.SortBubble()
+	assert.Equal(t, testItem, vector.Array())
 
 }
 
 func TestSortQuick(t *testing.T) {
 
-	//assert.Equal(t, Item("DBACFE"), result)
+	vector := NewRandomVector()
+
+	assert.Equal(t, testRandomItem, vector.Array())
+	vector.SortQuick()
+	assert.Equal(t, testItem, vector.Array())
 
 }
 
