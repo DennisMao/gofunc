@@ -263,3 +263,12 @@ func SplitConcurrency(raw []string, subStr string, splitGranularity int) int {
 
 	return cnt
 }
+
+// 协程池
+//
+// 协程数: 自定义
+// 共享方式: channel
+func ConcurrencyByGoroutinePool() {
+	//TODO
+	//...
+}
