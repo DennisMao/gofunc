@@ -89,10 +89,19 @@ func (this *arrayList) Uniquify() {
 // SearchDichotomy can find a specified item in traversal way.
 // O(1) ~ O(n)
 func(this *arrayList) Find(it Item,lo,hi int) int{
+	if  hi > this.lastIdx  {
+		hi = this.lastIdx
+	}
+	
+	
+	for lo <= hi {
+		
+	}
 	
 }
 
 // SearchBinary can search a specified item in binary way.
+// O(1.5*logn)
 func (this *arrayList) SearchBinary(it Item) int {
 	return -1
 }
