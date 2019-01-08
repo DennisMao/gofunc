@@ -2,7 +2,6 @@ package Vector
 
 import (
 	"bytes"
-	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -12,28 +11,88 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var (
+	testItem = []Item{"A", "B", "C", "D", "E", "F", "G"}
+)
+
+func NewVector() *vector {
+	vector := New()
+
+	for i, _ := range testItem {
+		vector.PushBack(testItem[i])
+	}
+
+	return vector
+}
+
 // 生成gv图
 func TestVector(t *testing.T) {
 
-	list := New()
+	vector := NewVector()
 
 	buf := &bytes.Buffer{}
-	memviz.Map(buf, tree)
+	memviz.Map(buf, vector)
 
 	ioutil.WriteFile("./Vector.gv", buf.Bytes(), os.ModePerm)
-	exec.Command("dot", "./Vector.gv", "-Tpng", "./Vector.png").Run()
+	exec.Command("dot", "-Tpng", "./Vector.gv", "-o", "./Vector.png").Run()
 }
 
-// 镜像翻转
-func TestMirror(t *testing.T) {
+// 插入
+func TestInsert(t *testing.T) {
+	vector := NewVector()
+	value, _ := vector.Get(0)
+	assert.Equal(t, Item("A"), value)
 
-	assert.Equal(t, Item("DBACFE"), result)
-	assert.Equal(t, Item("DFEBCA"), resultMirror)
+	vector.InsertOrUpdate(0, "Q")
+	value, _ = vector.Get(0)
+	assert.Equal(t, Item("Q"), value)
+
 }
 
-// 查找
-func TestPreorderTraversal(t *testing.T) {
+/////////////////////////// 查找 //////////////////////////
+// 遍历法
+func TestSearch(t *testing.T) {
 
-	assert.Equal(t, Item("DBACFE"), result)
+	//assert.Equal(t, Item("DBACFE"), result)
+
+}
+
+// 二分法
+func TestSearchBinary(t *testing.T) {
+
+	//assert.Equal(t, Item("DBACFE"), result)
+
+}
+
+// 斐波那契
+func TestSearchFib(t *testing.T) {
+
+	//assert.Equal(t, Item("DBACFE"), result)
+
+}
+
+/////////////////////////// 排序 //////////////////////////
+// 起泡
+func TestSortBubble(t *testing.T) {
+
+	//assert.Equal(t, Item("DBACFE"), result)
+
+}
+
+func TestSortQuick(t *testing.T) {
+
+	//assert.Equal(t, Item("DBACFE"), result)
+
+}
+
+func TestSortHeap(t *testing.T) {
+
+	//assert.Equal(t, Item("DBACFE"), result)
+
+}
+
+func TestSortMerge(t *testing.T) {
+
+	//assert.Equal(t, Item("DBACFE"), result)
 
 }
