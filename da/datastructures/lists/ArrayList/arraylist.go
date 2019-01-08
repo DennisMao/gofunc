@@ -73,3 +73,55 @@ func (this *arrayList) Sort(asc bool) {
 	// For details,you can find on 'https://sourcegraph.com/github.com/golang/go/-/blob/src/sort/sort.go#L183:6'
 
 }
+
+func (this *arrayList) Remove() {
+
+}
+
+// 唯一化
+func (this *arrayList) Uniquify() {
+
+}
+
+
+/////////////  算法 //////////////////
+
+// SearchDichotomy can find a specified item in traversal way.
+// O(1) ~ O(n)
+func(this *arrayList) Find(it Item,lo,hi int) int{
+	if  hi > this.lastIdx  {
+		hi = this.lastIdx
+	}
+	
+	
+	for lo <= hi {
+		
+	}
+	
+}
+
+// SearchBinary can search a specified item in binary way.
+// O(1.5*logn)
+func (this *arrayList) SearchBinary(it Item) int {
+	return -1
+}
+
+// SearchBinary can search a specified item in fibnacci way.
+func (this *arrayList) SearchFibnacci(it Item) int {
+	return -1
+}
+
+// SortBubble can sort the data set in Bubble-Sort way.
+func （this *arrayList）SortBubble() {
+	
+}
+
+// SortQuick can sort the data set in Quick-Sort way.
+func (this *arrayList) SortQuick() {
+	
+}
+
+// SortHeap can sort the data set in Heap-Sort way.
+func (this *arrayList) SortHeap() {
+	
+}
