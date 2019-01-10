@@ -12,8 +12,8 @@ import (
 )
 
 var (
-	testItem       = []Item{"A", "B", "C", "D", "E", "F", "G"}
-	testRandomItem = []Item{"D", "B", "C", "F", "G", "A", "E"}
+	testItem       = []Item{"A", "A", "A", "B", "C", "D", "E", "F", "G"}
+	testRandomItem = []Item{"D", "B", "C", "A", "F", "G", "A", "E", "A"}
 )
 
 func NewVector() *vector {
@@ -65,8 +65,8 @@ func TestInsert(t *testing.T) {
 func TestSearch(t *testing.T) {
 
 	vector := NewVector()
-	value := vector.Find(Item("A"), -1, -1)
-	assert.Equal(t, 0, value)
+	value := vector.Find(Item("B"), -1, -1)
+	assert.Equal(t, 3, value)
 
 	//assert.Equal(t, Item("DBACFE"), result)
 
@@ -75,15 +75,18 @@ func TestSearch(t *testing.T) {
 // 二分法
 func TestSearchBinary(t *testing.T) {
 
-	//assert.Equal(t, Item("DBACFE"), result)
+	vector := NewVector()
+	value := vector.SearchBinary(Item("B"), -1, -1)
+	assert.Equal(t, 3, value)
 
 }
 
 // 斐波那契
 func TestSearchFib(t *testing.T) {
 
-	//assert.Equal(t, Item("DBACFE"), result)
-
+	vector := NewVector()
+	value := vector.SearchBinary(Item("B"), -1, -1)
+	assert.Equal(t, 3, value)
 }
 
 /////////////////////////// 排序 //////////////////////////
@@ -98,6 +101,7 @@ func TestSortBubble(t *testing.T) {
 
 }
 
+// 快排
 func TestSortQuick(t *testing.T) {
 
 	vector := NewRandomVector()
@@ -108,14 +112,44 @@ func TestSortQuick(t *testing.T) {
 
 }
 
+// 堆排
 func TestSortHeap(t *testing.T) {
 
 	//assert.Equal(t, Item("DBACFE"), result)
 
 }
 
+// 归并
 func TestSortMerge(t *testing.T) {
 
-	//assert.Equal(t, Item("DBACFE"), result)
+	vector := NewRandomVector()
 
+	assert.Equal(t, testRandomItem, vector.Array())
+	vector.SortMerge()
+	assert.Equal(t, testItem, vector.Array())
+
+}
+
+// 希尔
+func TestSortShell(t *testing.T) {
+
+	vector := NewRandomVector()
+
+	assert.Equal(t, testRandomItem, vector.Array())
+	vector.SortInsertion()
+	assert.Equal(t, testItem, vector.Array())
+}
+
+// 直接插入
+func TestSortInsertion(t *testing.T) {
+
+	for i := 0; i < 10; i++ {
+		t.Log(fib(i))
+	}
+
+	vector := NewRandomVector()
+
+	assert.Equal(t, testRandomItem, vector.Array())
+	vector.SortInsertion()
+	assert.Equal(t, testItem, vector.Array())
 }

@@ -14,26 +14,24 @@ const (
 // ItemIterator allows callers of Ascend* to iterate in-order over portions of
 // the tree.  When this function returns false, iteration will stop and the
 // associated Ascend* function will immediately return.
-type ItemIterator func(i Item) bool
+type ItemIterator func(i string) bool
 
-// ItemCompare allows callers specify the compare function for items searching.
+// stringCompare allows callers specify the compare function for items searching.
 // Return the compare state
-type ItemCompare func(i Item) int
-
-type Item string
+type ItemCompare func(i string) int
 
 type Node struct {
 	left   *Node
 	right  *Node
 	parent *Node
-	data   Item
+	data   string
 }
 
 type BinaryTree struct {
 	Root *Node
 }
 
-func New(i Item) *BinaryTree {
+func New(i string) *BinaryTree {
 
 	return &BinaryTree{
 		Root: &Node{nil, nil, nil, i},
@@ -41,11 +39,11 @@ func New(i Item) *BinaryTree {
 
 }
 
-func (this *BinaryTree) InsertItem(item Item) error {
+func (this *BinaryTree) Insert(item string) error {
 	return findInsertNode(this.Root, item)
 }
 
-func findInsertNode(subNode *Node, item Item) error {
+func findInsertNode(subNode *Node, item string) error {
 
 	if subNode.data == item {
 		return errors.New("item exists")
@@ -75,7 +73,7 @@ func findInsertNode(subNode *Node, item Item) error {
 	return nil
 }
 
-func (tree *BinaryTree) SearchItem(f ItemCompare) (*Node, bool) {
+func (tree *BinaryTree) Searchstring(f ItemCompare) (*Node, bool) {
 	if tree.Root == nil {
 		return nil, false
 	}
@@ -151,4 +149,38 @@ func (tree *BinaryTree) PostorderTraversal(subNode *Node, it ItemIterator) {
 	}
 	it(subNode.data)
 
+}
+
+// 层级遍历
+// (1)从根部开始入栈
+// (2)出栈,输出
+// (3)左孩子入栈、右孩子入栈
+func (tree *BinaryTree) LevelTraversal(subNode *Node, it ItemIterator) {
+	if subNode == nil {
+		return
+	}
+
+	stack := make(chan *Node, 128)
+	stack <- subNode
+	for {
+		if len(stack) == 0 {
+			break
+		}
+
+		curNode := <-stack
+		if curNode == nil {
+			break
+		}
+
+		it(curNode.data) //输出
+
+		if curNode.left != nil {
+			stack <- curNode.left
+		}
+		if curNode.right != nil {
+			stack <- curNode.right
+		}
+	}
+
+	close(stack)
 }

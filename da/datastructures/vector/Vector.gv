@@ -1,0 +1,6 @@
+digraph structs {
+  node [shape=Mrecord];
+  2 [label="<name> []Vector.Item |{<2index0> 0|<2value0> \"A\"}|{<2index1> 1|<2value1> \"A\"}|{<2index2> 2|<2value2> \"A\"}|{<2index3> 3|<2value3> \"B\"}|{<2index4> 4|<2value4> \"C\"}|{<2index5> 5|<2value5> \"D\"}|{<2index6> 6|<2value6> \"E\"}|{<2index7> 7|<2value7> \"F\"}|{<2index8> 8|<2value8> \"G\"} "];
+  1 [label="<name> vector |<f0> data|{<f1> lastIdx | 8}  "];
+  1:f0 -> 2:name;
+}

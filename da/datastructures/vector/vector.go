@@ -4,6 +4,7 @@ package Vector
 import (
 	"errors"
 	"log"
+	"sort"
 	"time"
 )
 
@@ -98,8 +99,6 @@ func (this *vector) Remove() {
 }
 
 // 唯一化
-// 时间复杂度: O(n)
-// 空间复杂度: O(n)
 func (this *vector) Uniquify() {
 
 }
@@ -136,6 +135,35 @@ func (this *vector) Find(it Item, lo, hi int) int {
 // SearchBinary can search a specified item in binary way.
 // O(1.5*logn)
 func (this *vector) SearchBinary(it Item, lo, hi int) int {
+	if lo == -1 {
+		lo = 0
+	}
+
+	if hi == -1 {
+		hi = this.lastIdx
+	}
+
+	return searchBinarySearch(this.data, it, lo, hi)
+}
+
+func searchBinarySearch(arr []Item, it Item, lo, hi int) int {
+
+	privot := (lo + hi) / 2
+
+	if lo == hi && it != arr[privot] {
+		return -1
+	}
+
+	log.Printf("privot:%d  value:%s \n", privot, arr[privot])
+
+	switch {
+	case it < arr[privot]:
+		return searchBinarySearch(arr, it, lo, privot-1)
+	case it > arr[privot]:
+		return searchBinarySearch(arr, it, privot+1, hi)
+	case it == arr[privot]:
+		return privot
+	}
 
 	return -1
 }
@@ -166,8 +194,25 @@ func (this *vector) SortBubble() {
 // Avg : O(nlogn)
 // Worst： O(n^2)
 func (this *vector) SortQuick() {
-	//this.data = quickSort(this.data)
-	quickSortInplace(this.data, 0, this.lastIdx)
+	if len(this.data) < 2 {
+		return
+	}
+
+	log.Println("")
+
+	this.data = quickSort(this.data)
+	//quickSortInplace(this.data, 0, this.lastIdx)
+}
+
+func fib(n int) int {
+	if n == 0 {
+		return 0
+	}
+	if n == 1 {
+		return 1
+	}
+
+	return fib(n-2) + fib(n-1)
 }
 
 func quickSort(array []Item) []Item {
@@ -210,36 +255,40 @@ func quickSort(array []Item) []Item {
 // 原地分割
 func quickSortInplace(array []Item, left, right int) {
 
-	privotIdx := right / 2
+	privotIdx := right
 
-	for right > left {
+	for left <= right {
 		newPrivotIdx := quickSortPartition(array, left, right, privotIdx)
 		log.Printf("oldPrivotIdx:%d  newPrivotIdx:%d array:%v\n", privotIdx, newPrivotIdx, array)
+		if newPrivotIdx == privotIdx {
+			break
+		}
+
 		time.Sleep(1 * time.Second)
 
-		quickSortInplace(array, left, newPrivotIdx)
+		quickSortInplace(array, left, newPrivotIdx-1)
 		quickSortInplace(array, newPrivotIdx+1, right)
 	}
 }
 
 //从左往右找出合适的位置
 func quickSortPartition(array []Item, left, right, privotIdx int) int {
-	privotValue := array[privotIdx]
 
-	//log.Printf("raw array: %v \n", array)
+	privotValue := array[privotIdx]
 
 	//将privot值移到最右缓存起来
 	array[privotIdx], array[right] = array[right], array[privotIdx]
 	//log.Printf("setBuf array: %v \n", array)
 
 	suitIdx := left
-	for i := left; i < right; i++ {
+	for i := left; i <= right; i++ {
 
 		if array[i] < privotValue {
 			array[i], array[suitIdx] = array[suitIdx], array[i] //移动合适位置
 			suitIdx++
 		}
 	}
+
 	//log.Printf("finding suitIdx :%d array: %v \n", suitIdx, array)
 
 	//将privot放到合适位置
@@ -250,10 +299,110 @@ func quickSortPartition(array []Item, left, right, privotIdx int) int {
 
 // SortHeap can sort the data set in Heap-Sort way.
 func (this *vector) SortHeap() {
+	if len(this.data) < 2 {
+		return
+	}
 
 }
 
 // SortMerge can sort the data set in Merge-Sort way.
 func (this *vector) SortMerge() {
+	if len(this.data) < 2 {
+		return
+	}
+
+	this.data = mergeSortSort(this.data)
+
+}
+
+func mergeSortSort(arr []Item) []Item {
+	if len(arr) < 2 {
+		return arr
+	}
+
+	privot := len(arr) / 2
+
+	left := mergeSortSort(arr[:privot])
+	right := mergeSortSort(arr[privot:])
+
+	return mergeSortMerge(left, right)
+}
+
+func mergeSortMerge(left, right []Item) []Item {
+	lenLeft := len(left)
+	lenRight := len(right)
+
+	ret := make([]Item, lenLeft+lenRight)
+	i := 0
+	j := 0
+
+	// Scan both left and right arrays
+	for i < lenLeft && j < lenRight {
+
+		if left[i] < right[j] {
+			ret[i+j] = left[i]
+			i++
+			continue
+		} else {
+			ret[i+j] = right[j]
+			j++
+			continue
+		}
+	}
+
+	log.Printf("i:%d j:%d", i, j)
+
+	// Append elements left
+	if i < lenLeft {
+		for ; i < lenLeft; i++ {
+			ret[i+j] = left[i]
+		}
+
+	}
+	if j < lenRight {
+		for ; j < lenRight; j++ {
+			ret[i+j] = right[j]
+		}
+	}
+
+	log.Printf("left:%v right:%v merge:%v \n", left, right, ret)
+
+	return ret
+}
+
+// SortShell can sort the data set in Shell-Sort way.
+func (this *vector) SortShell() {
+	if len(this.data) < 2 {
+		return
+	}
+
+	for i := 1; i < len(this.data); i++ {
+		j := i
+		for ; j > 0 && this.data[j-1] > this.data[j]; j-- {
+			this.data[j], this.data[j-1] = this.data[j-1], this.data[j]
+		}
+		log.Printf("Pick:%s In:%d Arr:%v\n", this.data[j], j, this.data)
+	}
+
+}
+
+// SortInsertion can sort the data set in Insertion-Sort way.
+func (this *vector) SortInsertion() {
+	if len(this.data) < 2 {
+		return
+	}
+
+	_ = sort.Float64Slice{}
+
+	for i := 1; i < len(this.data); i++ {
+		temp := this.data[i]
+		j := i
+		for ; j > 0 && this.data[j-1] >= temp; j-- {
+			this.data[j], this.data[j-1] = this.data[j-1], this.data[j]
+		}
+
+		log.Printf("Pick:%s In:%d Arr:%v\n", this.data[j], j, this.data)
+		this.data[j] = temp
+	}
 
 }

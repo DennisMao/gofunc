@@ -15,11 +15,11 @@ import (
 // 生成gv图
 func TestBinaryTree(t *testing.T) {
 
-	tree := New(Item("D"))
+	tree := New("D")
 
-	st := []Item{"D", "B", "F", "A", "C", "E"}
+	st := []string{"D", "B", "F", "A", "C", "E"}
 	for i := 0; i < 6; i++ {
-		tree.InsertItem(st[i])
+		tree.Insert(st[i])
 	}
 
 	buf := &bytes.Buffer{}
@@ -31,22 +31,22 @@ func TestBinaryTree(t *testing.T) {
 
 // 镜像翻转
 func TestMirror(t *testing.T) {
-	tree := New(Item("D"))
+	tree := New("D")
 
-	st := []Item{"D", "B", "F", "A", "C", "E"}
+	st := []string{"D", "B", "F", "A", "C", "E"}
 	for i := 0; i < 6; i++ {
-		tree.InsertItem(st[i])
+		tree.Insert(st[i])
 	}
 
-	result := Item("")
-	it := func(i Item) bool {
+	result := ""
+	it := func(i string) bool {
 		fmt.Printf(" %s", i)
 		result += i
 		return true
 	}
 
-	resultMirror := Item("")
-	itMirror := func(i Item) bool {
+	resultMirror := ""
+	itMirror := func(i string) bool {
 		fmt.Printf(" %s", i)
 		resultMirror += i
 		return true
@@ -56,21 +56,22 @@ func TestMirror(t *testing.T) {
 	tree.Mirror(tree.Root)
 	tree.PreorderTraversal(tree.Root, itMirror)
 
-	assert.Equal(t, Item("DBACFE"), result)
-	assert.Equal(t, Item("DFEBCA"), resultMirror)
+	assert.Equal(t, "DBACFE", result)
+	assert.Equal(t, "DFEBCA", resultMirror)
 }
 
 // 前序
+// Root [Left] [Right]
 func TestPreorderTraversal(t *testing.T) {
-	tree := New(Item("D"))
+	tree := New("D")
 
-	st := []Item{"D", "B", "F", "A", "C", "E"}
+	st := []string{"D", "B", "F", "A", "C", "E"}
 	for i := 0; i < 6; i++ {
-		tree.InsertItem(st[i])
+		tree.Insert(st[i])
 	}
 
-	result := Item("")
-	it := func(i Item) bool {
+	result := ""
+	it := func(i string) bool {
 
 		fmt.Printf(" %s", i)
 		result += i
@@ -78,46 +79,69 @@ func TestPreorderTraversal(t *testing.T) {
 	}
 
 	tree.PreorderTraversal(tree.Root, it)
-	assert.Equal(t, Item("DBACFE"), result)
+	assert.Equal(t, "DBACFE", result)
 
 }
 
 // 中序
+// [Left] Root [Right]
 func TestInorderTraversal(t *testing.T) {
-	tree := New(Item("D"))
+	tree := New("D")
 
-	st := []Item{"D", "B", "F", "A", "C", "E"}
+	st := []string{"D", "B", "F", "A", "C", "E"}
 	for i := 0; i < 6; i++ {
-		tree.InsertItem(st[i])
+		tree.Insert(st[i])
 	}
 
-	result := Item("")
-	it := func(i Item) bool {
+	result := ""
+	it := func(i string) bool {
 		fmt.Printf(" %s", i)
 		result += i
 		return true
 	}
 
 	tree.InorderTraversal(tree.Root, it)
-	assert.Equal(t, Item("ABCDEF"), result)
+	assert.Equal(t, "ABCDEF", result)
 }
 
 // 后序
+// [Right] [Left] Root
 func TestPostorderTraversal(t *testing.T) {
-	tree := New(Item("D"))
+	tree := New("D")
 
-	st := []Item{"D", "B", "F", "A", "C", "E"}
+	st := []string{"D", "B", "F", "A", "C", "E"}
 	for i := 0; i < 6; i++ {
-		tree.InsertItem(st[i])
+		tree.Insert(st[i])
 	}
 
-	result := Item("")
-	it := func(i Item) bool {
+	result := ""
+	it := func(i string) bool {
 		fmt.Printf(" %s", i)
 		result += i
 		return false
 	}
 
 	tree.PostorderTraversal(tree.Root, it)
-	assert.Equal(t, Item("ACBEFD"), result)
+	assert.Equal(t, "ACBEFD", result)
+}
+
+// 层级遍历
+// ROOT [h2] ... [hn]
+func TestLevelTraversal(t *testing.T) {
+	tree := New("D")
+
+	st := []string{"D", "B", "F", "A", "C", "E"}
+	for i := 0; i < 6; i++ {
+		tree.Insert(st[i])
+	}
+
+	result := ""
+	it := func(i string) bool {
+		fmt.Printf(" %s", i)
+		result += i
+		return false
+	}
+
+	tree.LevelTraversal(tree.Root, it)
+	assert.Equal(t, "DBFACE", result)
 }
