@@ -1,4 +1,3 @@
-//https://github.com/Workiva/go-datastructures/blob/master/tree/avl/avl.go
 // Name: Binary search tree
 package BinarySearchTree
 
