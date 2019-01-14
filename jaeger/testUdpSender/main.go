@@ -32,7 +32,7 @@ func main() {
 	defer yfSpan.Finish()
 	time.Sleep(100 * time.Millisecond)
 
-	webServiceSpan := trace.StartSpan("webservice", opentracing.ChildOf(yfSpan.Context()))
+	webServiceSpan := trace.StartSpan("webplatform", opentracing.ChildOf(yfSpan.Context()))
 	defer webServiceSpan.Finish()
 	time.Sleep(200 * time.Millisecond)
 
