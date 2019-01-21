@@ -85,7 +85,15 @@ func TestSearchBinary(t *testing.T) {
 func TestSearchFib(t *testing.T) {
 
 	vector := NewVector()
-	value := vector.SearchBinary(Item("B"), -1, -1)
+	value := vector.SearchFibnacci(Item("B"), -1, -1)
+	assert.Equal(t, 3, value)
+}
+
+// 插值法
+func TestSearchInsert(t *testing.T) {
+
+	vector := NewVector()
+	value := vector.SearchInsert(Item("B"), -1, -1)
 	assert.Equal(t, 3, value)
 }
 
@@ -115,8 +123,11 @@ func TestSortQuick(t *testing.T) {
 // 堆排
 func TestSortHeap(t *testing.T) {
 
-	//assert.Equal(t, Item("DBACFE"), result)
+	vector := NewRandomVector()
 
+	assert.Equal(t, testRandomItem, vector.Array())
+	vector.SortHeap()
+	assert.Equal(t, testItem, vector.Array())
 }
 
 // 归并
