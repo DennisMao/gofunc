@@ -4,7 +4,6 @@ package Vector
 import (
 	"errors"
 	"log"
-	"sort"
 	"time"
 )
 
@@ -148,28 +147,95 @@ func (this *vector) SearchBinary(it Item, lo, hi int) int {
 
 func searchBinarySearch(arr []Item, it Item, lo, hi int) int {
 
-	privot := (lo + hi) / 2
+	pivot := (lo + hi) / 2
 
-	if lo == hi && it != arr[privot] {
+	if lo == hi && it != arr[pivot] {
 		return -1
 	}
 
-	log.Printf("privot:%d  value:%s \n", privot, arr[privot])
+	log.Printf("pivot:%d  value:%s \n", pivot, arr[pivot])
 
 	switch {
-	case it < arr[privot]:
-		return searchBinarySearch(arr, it, lo, privot-1)
-	case it > arr[privot]:
-		return searchBinarySearch(arr, it, privot+1, hi)
-	case it == arr[privot]:
-		return privot
+	case it < arr[pivot]:
+		return searchBinarySearch(arr, it, lo, pivot-1)
+	case it > arr[pivot]:
+		return searchBinarySearch(arr, it, pivot+1, hi)
+	case it == arr[pivot]:
+		return pivot
 	}
 
 	return -1
 }
 
+var fibArray []int
+
+func init() {
+	fibArray := make([]int, 20)
+
+	for n := 0; n < 20; n++ {
+		fibArray[n] = fib(n)
+	}
+}
+
+func fib(n int) int {
+	if n == 0 {
+		return 0
+	}
+	if n == 1 {
+		return 1
+	}
+
+	return fib(n-1) + fib(n-2)
+}
+
+func GetFib(n int) int {
+	if n > len(fibArray)-1 {
+		return fib(n)
+	}
+
+	return fibArray[n]
+}
+
 // SearchBinary can search a specified item in fibnacci way.
-func (this *vector) SearchFibnacci(it Item) int {
+func (this *vector) SearchFibnacci(it Item, lo, hi int) int {
+	return searchFibnacci(this.data, it, 0, this.lastIdx)
+}
+
+func searchFibnacci(arr []Item, it Item, lo, hi int) int {
+
+	k := hi - 1
+	pivot := GetFib(k)
+	if pivot > hi {
+		for pivot > hi {
+			k--
+			pivot = GetFib(k)
+		}
+	}
+
+	if pivot < lo {
+		pivot = (lo + hi) / 2 //当[lo,hi]处在FIB区间内的时候用二分法
+	}
+
+	if lo == hi && it != arr[pivot] {
+		return -1
+	}
+
+	log.Printf("arr:%v pivot:%d  value:%s \n", arr, pivot, arr[pivot])
+
+	switch {
+	case it < arr[pivot]:
+		return searchFibnacci(arr, it, lo, pivot-1)
+	case it > arr[pivot]:
+		return searchFibnacci(arr, it, pivot+1, hi)
+	case it == arr[pivot]:
+		return pivot
+	}
+
+	return -1
+}
+
+// SearchInsert can search a specified item in insert-search way.
+func (this *vector) SearchInsert(it Item) int {
 	return -1
 }
 
@@ -198,21 +264,8 @@ func (this *vector) SortQuick() {
 		return
 	}
 
-	log.Println("")
-
-	this.data = quickSort(this.data)
-	//quickSortInplace(this.data, 0, this.lastIdx)
-}
-
-func fib(n int) int {
-	if n == 0 {
-		return 0
-	}
-	if n == 1 {
-		return 1
-	}
-
-	return fib(n-2) + fib(n-1)
+	//this.data = quickSort(this.data)
+	quickSortInplace(this.data)
 }
 
 func quickSort(array []Item) []Item {
@@ -253,48 +306,36 @@ func quickSort(array []Item) []Item {
 }
 
 // 原地分割
-func quickSortInplace(array []Item, left, right int) {
+func quickSortInplace(array []Item) {
+	if len(array) < 2 {
+		return
+	}
+	log.Printf("Raw== array:%v    \n", array)
 
-	privotIdx := right
+	pivotIdx := 0            //基准点
+	pivot := array[pivotIdx] //哨兵
+	i := 1
+	j := len(array) - 1
 
-	for left <= right {
-		newPrivotIdx := quickSortPartition(array, left, right, privotIdx)
-		log.Printf("oldPrivotIdx:%d  newPrivotIdx:%d array:%v\n", privotIdx, newPrivotIdx, array)
-		if newPrivotIdx == privotIdx {
-			break
+	for i <= j {
+
+		if array[i] < pivot {
+			array[i], array[pivotIdx] = array[pivotIdx], array[i]
+			i++
+			pivotIdx++
+		} else {
+			array[j], array[i] = array[i], array[j]
+			j--
 		}
 
-		time.Sleep(1 * time.Second)
-
-		quickSortInplace(array, left, newPrivotIdx-1)
-		quickSortInplace(array, newPrivotIdx+1, right)
-	}
-}
-
-//从左往右找出合适的位置
-func quickSortPartition(array []Item, left, right, privotIdx int) int {
-
-	privotValue := array[privotIdx]
-
-	//将privot值移到最右缓存起来
-	array[privotIdx], array[right] = array[right], array[privotIdx]
-	//log.Printf("setBuf array: %v \n", array)
-
-	suitIdx := left
-	for i := left; i <= right; i++ {
-
-		if array[i] < privotValue {
-			array[i], array[suitIdx] = array[suitIdx], array[i] //移动合适位置
-			suitIdx++
-		}
+		time.Sleep(200 * time.Millisecond)
 	}
 
-	//log.Printf("finding suitIdx :%d array: %v \n", suitIdx, array)
+	array[pivotIdx] = pivot
+	log.Printf("Sort== arrayLeft:%v   Idx: %s %d  arrayRight:%v \n", array[:pivotIdx], pivot, pivotIdx, array[pivotIdx+1:])
+	quickSortInplace(array[:pivotIdx])
+	quickSortInplace(array[pivotIdx+1:])
 
-	//将privot放到合适位置
-	array[suitIdx], array[right] = array[right], array[suitIdx]
-	//log.Printf("reset  array: %v \n", array)
-	return suitIdx
 }
 
 // SortHeap can sort the data set in Heap-Sort way.
@@ -303,6 +344,49 @@ func (this *vector) SortHeap() {
 		return
 	}
 
+	heapSort(this.data, 0, this.lastIdx)
+
+}
+
+func heapSort(arr []Item, left, right int) {
+	first := left
+	lo := 0
+	hi := right - left
+
+	// Build heap with greatest element at top.
+	for i := (hi - 1) / 2; i >= 0; i-- {
+		siftDown(arr, i, hi, first)
+	}
+
+	log.Printf("arr:%v left:%s \n", arr, arr[left])
+
+	// Pop elements, largest first, into end of data.
+	for i := hi - 1; i >= 0; i-- {
+		arr[first], arr[first+i] = arr[first+i], arr[first]
+		siftDown(arr, lo, i, first)
+		log.Printf("arr:%v first:%v arr[i]:%v \n", arr, arr[first], arr[first+i])
+	}
+}
+
+// siftDown implements the heap property on data[lo, hi).
+// first is an offset into the array where the root of the heap lies.
+func siftDown(arr []Item, lo, hi, first int) {
+	root := lo
+	for {
+		child := 2*root + 1
+		if child >= hi {
+			break
+		}
+		if child+1 < hi && arr[first+child] < arr[first+child+1] {
+			child++
+		}
+		if !(arr[first+root] < arr[first+child]) {
+			return
+		}
+		arr[first+root], arr[first+child] = arr[first+child], arr[first+root]
+
+		root = child
+	}
 }
 
 // SortMerge can sort the data set in Merge-Sort way.
@@ -320,10 +404,10 @@ func mergeSortSort(arr []Item) []Item {
 		return arr
 	}
 
-	privot := len(arr) / 2
+	pivot := len(arr) / 2
 
-	left := mergeSortSort(arr[:privot])
-	right := mergeSortSort(arr[privot:])
+	left := mergeSortSort(arr[:pivot])
+	right := mergeSortSort(arr[pivot:])
 
 	return mergeSortMerge(left, right)
 }
@@ -391,8 +475,6 @@ func (this *vector) SortInsertion() {
 	if len(this.data) < 2 {
 		return
 	}
-
-	_ = sort.Float64Slice{}
 
 	for i := 1; i < len(this.data); i++ {
 		temp := this.data[i]
