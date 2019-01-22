@@ -2,7 +2,7 @@
 package BinarySearchTree
 
 import (
-	"log"
+	"errors"
 )
 
 const (
@@ -21,8 +21,10 @@ type ItemIterator func(i string) bool
 type ItemCompare func(i string) int
 
 type Node struct {
-	left, right, parent *Node
-	data                string
+	left   *Node
+	right  *Node
+	parent *Node
+	data   string
 }
 
 type BinarySearchTree struct {
@@ -37,88 +39,68 @@ func New(i string) *BinarySearchTree {
 
 }
 
-func (tree *BinarySearchTree) Insert(it string) *Node {
-
-	insertPos := searchWithHot(tree.Root, it) // find a suitable insert postition
-	if insertPos == nil {
-		return nil
-	}
-
-	if insertPos.data == it {
-		return insertPos // 'it' exists
-	}
-
-	log.Printf("insertPos:%s Target:%s\n", insertPos.data, it)
-
-	newNode := Node{parent: insertPos, data: it} // create a new node for 'it'
-
-	// connect the new node with it's parents
-	if insertPos.data > it {
-		insertPos.left = &newNode
-	} else {
-		insertPos.right = &newNode
-	}
-
-	return &newNode
+func (this *BinarySearchTree) Insert(item string) error {
+	return findInsertNode(this.Root, item)
 }
 
-func (tree *BinarySearchTree) Search(it string) *Node {
+func findInsertNode(subNode *Node, item string) error {
+
+	if subNode.data == item {
+		return errors.New("item exists")
+	}
+
+	if subNode.data > item {
+		if subNode.left == nil {
+			subNode.left = &Node{
+				parent: subNode,
+				data:   item,
+			}
+			return nil
+		}
+
+		findInsertNode(subNode.left, item)
+	} else {
+		if subNode.right == nil {
+			subNode.right = &Node{
+				parent: subNode,
+				data:   item,
+			}
+			return nil
+		}
+		findInsertNode(subNode.right, item)
+	}
+
+	return nil
+}
+
+func (tree *BinarySearchTree) Searchstring(f ItemCompare) (*Node, bool) {
 	if tree.Root == nil {
-		return nil
+		return nil, false
 	}
+	currentNode := tree.Root
+	for currentNode != nil {
 
-	return search(tree.Root, it)
-}
-
-// searchWithHot can find the data 'it' in a tree using recursive algorithm,
-// and return a pointer pointed to 'it' if find while return a pointer
-// poined to 'it' 's father node if not find.
-func searchWithHot(sub *Node, it string) *Node {
-	if sub == nil {
-		return nil
-	}
-
-	if sub.data == it {
-		return sub
-	}
-
-	log.Printf("当前search:%s  目标:%s \n", sub.data, it)
-
-	if sub.data > it {
-		if sub.left != nil {
-			return searchWithHot(sub.left, it)
-		} else {
-			return sub
-		}
-	} else {
-		if sub.right != nil {
-			return searchWithHot(sub.right, it)
-		} else {
-			return sub
+		switch f(currentNode.data) {
+		case CompareEqual:
+			return currentNode, true
+		case CompareLess:
+			currentNode = currentNode.right
+		case CompareMore:
+			currentNode = currentNode.left
 		}
 	}
-
-	return nil
+	return nil, false
 }
 
-// search can find the data 'it' in a tree using recursive algorithm,
-// and return a pointer pointed to 'it' if find while return 'nil' if not find.
-func search(sub *Node, it string) *Node {
-	if sub == nil {
-		return nil
+// 镜像翻转
+func (tree *BinarySearchTree) Mirror(subNode *Node) {
+	if subNode == nil {
+		return
 	}
 
-	if sub.data == it {
-		return sub
-	}
-
-	if sub.data < it {
-		return search(sub.left, it)
-	} else {
-		return search(sub.right, it)
-	}
-
-	return nil
+	subNode.left, subNode.right = subNode.right, subNode.left
+	tree.Mirror(subNode.left)
+	tree.Mirror(subNode.right)
 }
 
 // 前序

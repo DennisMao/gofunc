@@ -17,7 +17,7 @@ func TestBinarySearchTree(t *testing.T) {
 
 	tree := New("D")
 
-	st := []string{"D", "B", "A", "C", "E", "F", "G"}
+	st := []string{"D", "B", "F", "A", "C", "E"}
 	for i := 0; i < 6; i++ {
 		tree.Insert(st[i])
 	}
@@ -33,15 +33,14 @@ func TestBinarySearchTree(t *testing.T) {
 func TestSearch(t *testing.T) {
 	tree := New("D")
 
-	//st := []string{"D", "B", "F", "A", "C", "E"}
-	st := []string{"D", "B", "A", "C", "E", "F", "G"}
+	st := []string{"D", "B", "F", "A", "C", "E"}
 	for i := 0; i < 6; i++ {
 		tree.Insert(st[i])
 	}
 
-	node := tree.Search("D")
+	result := tree.Search("B")
 
-	assert.Equal(t, "D", node.data)
+	assert.Equal(t, "B", result.data)
 }
 
 // 前序

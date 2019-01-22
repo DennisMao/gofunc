@@ -1,19 +1,19 @@
 digraph structs {
   node [shape=Mrecord];
-  4 [label="<name> Node |{<f0> left | *BinarySearchTree.Node(nil)} |{<f1> right | *BinarySearchTree.Node(nil)} |<f2> parent|{<f3> _high | 2} |{<f4> data | \"A\"}  "];
+  4 [label="<name> Node |{<f0> left | *BinarySearchTree.Node(nil)} |{<f1> right | *BinarySearchTree.Node(nil)} |<f2> parent|{<f3> data | \"A\"}  "];
   4:f2 -> 3:name;
-  5 [label="<name> Node |{<f0> left | *BinarySearchTree.Node(nil)} |{<f1> right | *BinarySearchTree.Node(nil)} |<f2> parent|{<f3> _high | 2} |{<f4> data | \"C\"}  "];
+  5 [label="<name> Node |{<f0> left | *BinarySearchTree.Node(nil)} |{<f1> right | *BinarySearchTree.Node(nil)} |<f2> parent|{<f3> data | \"C\"}  "];
   5:f2 -> 3:name;
-  3 [label="<name> Node |<f0> left|<f1> right|<f2> parent|{<f3> _high | 1} |{<f4> data | \"B\"}  "];
+  3 [label="<name> Node |<f0> left|<f1> right|<f2> parent|{<f3> data | \"B\"}  "];
   3:f0 -> 4:name;
   3:f1 -> 5:name;
   3:f2 -> 2:name;
-  7 [label="<name> Node |{<f0> left | *BinarySearchTree.Node(nil)} |{<f1> right | *BinarySearchTree.Node(nil)} |<f2> parent|{<f3> _high | 2} |{<f4> data | \"F\"}  "];
+  7 [label="<name> Node |{<f0> left | *BinarySearchTree.Node(nil)} |{<f1> right | *BinarySearchTree.Node(nil)} |<f2> parent|{<f3> data | \"E\"}  "];
   7:f2 -> 6:name;
-  6 [label="<name> Node |<f0> left|{<f1> right | *BinarySearchTree.Node(nil)} |<f2> parent|{<f3> _high | 1} |{<f4> data | \"E\"}  "];
+  6 [label="<name> Node |<f0> left|{<f1> right | *BinarySearchTree.Node(nil)} |<f2> parent|{<f3> data | \"F\"}  "];
   6:f0 -> 7:name;
   6:f2 -> 2:name;
-  2 [label="<name> Node |<f0> left|<f1> right|{<f2> parent | *BinarySearchTree.Node(nil)} |{<f3> _high | 0} |{<f4> data | \"D\"}  "];
+  2 [label="<name> Node |<f0> left|<f1> right|{<f2> parent | *BinarySearchTree.Node(nil)} |{<f3> data | \"D\"}  "];
   2:f0 -> 3:name;
   2:f1 -> 6:name;
   1 [label="<name> BinarySearchTree |<f0> Root "];
