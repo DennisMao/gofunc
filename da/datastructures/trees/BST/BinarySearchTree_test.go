@@ -39,8 +39,38 @@ func TestSearch(t *testing.T) {
 	}
 
 	result := tree.Search("B")
+	if result == nil {
+		t.Fatal("Search failed")
+	}
 
 	assert.Equal(t, "B", result.data)
+}
+
+// 删除
+func TestDelete(t *testing.T) {
+	tree := New("D")
+
+	st := []string{"D", "B", "F", "A", "C", "E"}
+	for i := 0; i < 6; i++ {
+		tree.Insert(st[i])
+	}
+
+	result := ""
+	it := func(i string) bool {
+
+		result += i
+		return true
+	}
+
+	tree.InorderTraversal(tree.Root, it)
+	assert.Equal(t, "ABCDEF", result)
+
+	tree.Delete("B")
+
+	result = ""
+	tree.InorderTraversal(tree.Root, it)
+	assert.Equal(t, "ACDEF", result)
+
 }
 
 // 前序

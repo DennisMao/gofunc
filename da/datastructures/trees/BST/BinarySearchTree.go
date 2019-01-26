@@ -1,7 +1,8 @@
-// Name: Binary tree
+// Name: Binary search tree
 package BinarySearchTree
 
 import (
+	"fmt"
 	"log"
 )
 
@@ -48,7 +49,7 @@ func (tree *BinarySearchTree) Insert(it string) *Node {
 		return insertPos // 'it' exists
 	}
 
-	log.Printf("insertPos:%s Target:%s\n", insertPos.data, it)
+	//	log.Printf("insertPos:%s Target:%s\n", insertPos.data, it)
 
 	newNode := Node{parent: insertPos, data: it} // create a new node for 'it'
 
@@ -82,7 +83,7 @@ func searchWithHot(sub *Node, it string) *Node {
 		return sub
 	}
 
-	log.Printf("当前search:%s  目标:%s \n", sub.data, it)
+	//log.Printf("当前search:%s  目标:%s \n", sub.data, it)
 
 	if sub.data > it {
 		if sub.left != nil {
@@ -112,13 +113,78 @@ func search(sub *Node, it string) *Node {
 		return sub
 	}
 
-	if sub.data < it {
+	if sub.data > it {
 		return search(sub.left, it)
 	} else {
 		return search(sub.right, it)
 	}
 
 	return nil
+}
+
+// Delete can delete a specifed node with data 'it'
+func (tree *BinarySearchTree) Delete(it string) error {
+	pos := search(tree.Root, it)
+	if pos == nil {
+		return fmt.Errorf("Can not find the node with data '%s'", it)
+	}
+
+	if pos.data != it {
+		return fmt.Errorf("Can not find the node with data '%s'", it)
+	}
+
+	return delete(pos)
+}
+
+func delete(sub *Node) error {
+	/*分三种情况,需要删除的点为
+	1.叶子结点,将父亲关联去掉释放结点
+	2.仅有左子树或者右子树
+		1.右子树为空,从新连接为左子树
+		2.左子树为空,从新连接为右子树
+	3.同时有左子树或者右子树
+		1.将待删除点替换成'左孩子'的'最右子树结点'结点(左子树中的最大值)
+	*/
+	if sub == nil {
+		return fmt.Errorf("Can not find the node")
+	}
+
+	if sub.left != nil && sub.right != nil {
+		// 左右都有子树
+		maxLeftChild := sub.left //转向左子树,找到左子树中的最大值
+
+		for maxLeftChild.right != nil {
+			maxLeftChild = maxLeftChild.right
+		}
+
+		sub.data = maxLeftChild.data //待删节点换成左子树最大值结点
+		return delete(maxLeftChild)
+
+	} else if sub.left != nil {
+		// 拥有左子树
+		sub.data = sub.left.data
+		sub.left = sub.left.left
+		sub.right = sub.left.right
+		return nil
+
+	} else if sub.right != nil {
+		// 拥有右子树
+		sub.data = sub.right.data
+		sub.left = sub.right.left
+		sub.right = sub.right.right
+		return nil
+
+	} else {
+		// 叶子节点
+		if sub.parent.left == sub {
+			sub.parent.left = nil
+		} else {
+			sub.parent.right = nil
+		}
+
+	}
+
+	return fmt.Errorf("Delete failed")
 }
 
 // 前序
