@@ -15,7 +15,7 @@ import (
 // 生成gv图
 func TestBinaryTree(t *testing.T) {
 
-	tree := New("D")
+	tree := New()
 
 	st := []string{"D", "B", "F", "A", "C", "E"}
 	for i := 0; i < 6; i++ {
@@ -31,7 +31,7 @@ func TestBinaryTree(t *testing.T) {
 
 // 镜像翻转
 func TestMirror(t *testing.T) {
-	tree := New("D")
+	tree := New()
 
 	st := []string{"D", "B", "F", "A", "C", "E"}
 	for i := 0; i < 6; i++ {
@@ -63,7 +63,7 @@ func TestMirror(t *testing.T) {
 // 前序
 // Root [Left] [Right]
 func TestPreorderTraversal(t *testing.T) {
-	tree := New("D")
+	tree := New()
 
 	st := []string{"D", "B", "F", "A", "C", "E"}
 	for i := 0; i < 6; i++ {
@@ -86,7 +86,7 @@ func TestPreorderTraversal(t *testing.T) {
 // 中序
 // [Left] Root [Right]
 func TestInorderTraversal(t *testing.T) {
-	tree := New("D")
+	tree := New()
 
 	st := []string{"D", "B", "F", "A", "C", "E"}
 	for i := 0; i < 6; i++ {
@@ -107,7 +107,7 @@ func TestInorderTraversal(t *testing.T) {
 // 后序
 // [Right] [Left] Root
 func TestPostorderTraversal(t *testing.T) {
-	tree := New("D")
+	tree := New()
 
 	st := []string{"D", "B", "F", "A", "C", "E"}
 	for i := 0; i < 6; i++ {
@@ -128,7 +128,7 @@ func TestPostorderTraversal(t *testing.T) {
 // 层级遍历
 // ROOT [h2] ... [hn]
 func TestLevelTraversal(t *testing.T) {
-	tree := New("D")
+	tree := New()
 
 	st := []string{"D", "B", "F", "A", "C", "E"}
 	for i := 0; i < 6; i++ {

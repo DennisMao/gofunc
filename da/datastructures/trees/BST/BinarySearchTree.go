@@ -3,7 +3,6 @@ package BinarySearchTree
 
 import (
 	"fmt"
-	"log"
 )
 
 const (
@@ -23,6 +22,7 @@ type ItemCompare func(i string) int
 
 type Node struct {
 	left, right, parent *Node
+	height              int
 	data                string
 }
 
@@ -30,15 +30,81 @@ type BinarySearchTree struct {
 	Root *Node
 }
 
-func New(i string) *BinarySearchTree {
+////////////////////// Node operation //////////////////////
+func (this *Node) Data() string {
+	return this.data
+}
 
-	return &BinarySearchTree{
-		Root: &Node{nil, nil, nil, i},
+func Height(sub *Node) int {
+	if sub == nil {
+		return 0
 	}
+
+	return sub.height
+}
+
+func LChild(sub *Node) *Node {
+	if sub == nil {
+		return nil
+	}
+	return sub.left
+}
+
+func RChild(sub *Node) *Node {
+	if sub == nil {
+		return nil
+	}
+	return sub.right
+}
+
+func Parent(sub *Node) *Node {
+	if sub == nil {
+		return nil
+	}
+	return sub.parent
+}
+
+// CollectHeight will collect the height for a node itself.
+func CollectHeight(sub *Node) {
+	sub.height = getHeight(sub)
+}
+
+// CollectHeightDeep will collect the height property for a node including its childrens.
+func CollectHeightDeep(sub *Node) {
+	sub.height = getHeight(sub)
+}
+
+func IncreaseHeight(sub *Node) {
+	sub.height++
+}
+
+func getHeight(sub *Node) int {
+	if sub == nil {
+		return 0
+	}
+
+	leftHeight := getHeight(sub.left)
+	rightHeight := getHeight(sub.right)
+
+	// Get Max(leftHeight,rightHeight)
+	if leftHeight < rightHeight {
+		return rightHeight + 1
+	} else {
+		return leftHeight + 1
+	}
+}
+
+////////////////////// Tree operation //////////////////////
+func New() *BinarySearchTree {
+
+	return &BinarySearchTree{nil}
 
 }
 
 func (tree *BinarySearchTree) Insert(it string) *Node {
+	if tree.Root == nil {
+		tree.Root = &Node{nil, nil, nil, 0, it}
+	}
 
 	insertPos := searchWithHot(tree.Root, it) // find a suitable insert postition
 	if insertPos == nil {
