@@ -21,25 +21,30 @@ type ItemIterator func(i string) bool
 type ItemCompare func(i string) int
 
 type Node struct {
-	left   *Node
-	right  *Node
-	parent *Node
-	data   string
+	left, right, parent *Node
+	height              int
+
+	data string
 }
 
 type BinaryTree struct {
 	Root *Node
 }
 
-func New(i string) *BinaryTree {
-
+////////////////////// Tree operation //////////////////////
+func New() *BinaryTree {
 	return &BinaryTree{
-		Root: &Node{nil, nil, nil, i},
+		Root: nil,
 	}
 
 }
 
 func (this *BinaryTree) Insert(item string) error {
+	if this.Root == nil {
+		this.Root = &Node{nil, nil, nil, 0, item}
+		return nil
+	}
+
 	return findInsertNode(this.Root, item)
 }
 
