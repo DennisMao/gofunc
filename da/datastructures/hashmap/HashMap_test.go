@@ -18,7 +18,7 @@ func TestHashMap(t *testing.T) {
 
 	st := []string{"D", "B", "F", "A", "C", "E"}
 	for i := 0; i < 6; i++ {
-		hashmap.Insert(st[i], st[i])
+		hashmap.Set(st[i], st[i])
 	}
 
 	buf := &bytes.Buffer{}
@@ -29,33 +29,33 @@ func TestHashMap(t *testing.T) {
 }
 
 // 搜索
-func TestSearch(t *testing.T) {
+func TestGet(t *testing.T) {
 	hashmap := New(0)
 
 	st := []string{"D", "B", "F", "A", "C", "E"}
 	for i := 0; i < 6; i++ {
-		hashmap.Insert(st[i], st[i])
+		hashmap.Set(st[i], st[i])
 	}
 
-	result, isFind := hashmap.Search("B")
+	result, isFind := hashmap.Get("B")
 	if !isFind || result == nil {
-		t.Fatal("Search failed")
+		t.Fatal("Get failed")
 	}
 
 	assert.Equal(t, "B", result.(string))
 }
 
 // 删除
-func TestDelete(t *testing.T) {
+func TestDel(t *testing.T) {
 	hashmap := New(0)
 
 	st := []string{"D", "B", "F", "A", "C", "E"}
 	for i := 0; i < 6; i++ {
-		hashmap.Insert(st[i], st[i])
+		hashmap.Set(st[i], st[i])
 	}
 
-	hashmap.Delete("B")
-	_, isFind := hashmap.Search("B")
+	hashmap.Del("B")
+	_, isFind := hashmap.Get("B")
 
 	assert.Equal(t, false, isFind)
 
