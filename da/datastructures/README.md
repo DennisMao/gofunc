@@ -1,39 +1,48 @@
 # 数据结构
-## 树
-结构名称|功能|Demo
+使用Go语言实现的常用数据结构用于练手,代码的实现结合了清华大学邓俊辉《数据结构课程》和《大话数据结构》的课设，部分设计思路参考了《Redis 2.4》和《Go源码 1.10》.
+单元测试采用[testify](github.com/stretchr/testify/assert)框架,Dot图生成采用[memviz](github.com/bradleyjkemp/memviz).
+
+使用说明:
+
++ 1.安装[graphviz](http://www.graphviz.org/),若无需生成Dot图可忽略此步
++ 2.cd 到指定数据结构目录
++ 3.go test 
++ 4.程序会自动进行单元测试并生成出dot文件 XXX.gv和可视图 XXX.png。
+
+HashMap:
+![HashMap](/hashmap/HashMap.png)
+
+
+
+## 目录
+### 向量
+结构名称|代码|实现
 :-|:-|:-
-二叉树|-|[BinaryTree](/trees/BinaryTree)
-BST|-|[BinarySearchTree](/trees/BinarySearchTree)
-B树|-|[Btree](/trees/Btree)
-AVL|-|[AvlTree](/trees/AvlTree)
-红黑树|-|[RedBlackTree](/trees/RedBlackTree)
+向量|[Vector](/vector)|√|
 
-## 线性表
-
-### 实现
-结构名称|功能|Demo
+### 链表
+结构名称|代码|实现
 :-|:-|:-
-序列|-|[ArrayList](/lists/ArrayList)
-单(双)向链表|-|[LinkedList](/lists/LinkedList)
-环|-|[Ring](/lists/Ring)
+双向链表|[LinkedList](/lists/LinkedList)|√|
+环|[Ring](/lists/Ring)|√|
+跳跃表|[SkipList](/lists/SkipLists)||
 
-### 特性
-结构名称|优点|缺点
+### 串
+结构名称|代码|实现
 :-|:-|:-
-序列|顺序存储,需要进行偏移量查找和范围导出非常方便,指定位置查找复杂度 O(1)|插入和删除需要移动大量内存空间
-单(双)向链表|链式存储,插入删除十分方便,查找后继方便|查询指定元素最差复杂度为O(n)
+串|[String](/strings)|√|
 
-# 队列
-特点: 先进先出
-
-## 循环队列
-特点: 限制长度
-
-# 栈
-特点: 后进先出
-
-## Map
-结构名称|功能|Demo
+### 树
+结构名称|代码|实现
 :-|:-|:-
-哈希map|-|
-树map|-|
+二叉树|[BinaryTree](/trees/BinaryTree)|√|
+BST|[BinarySearchTree](/trees/BinarySearchTree)|√|
+AVL|[AvlTree](/trees/AvlTree)||
+B树|[Btree](/trees/Btree)||
+红黑树|[RedBlackTree](/trees/RedBlackTree)||
+
+### HashTable
+结构名称|代码|实现
+:-|:-|:-
+哈希表|[HashMap](/hashmap)|√|
+
