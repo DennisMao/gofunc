@@ -10,7 +10,7 @@
 + 4.程序会自动进行单元测试并生成出dot文件 XXX.gv和可视图 XXX.png。
 
 HashMap:
-![HashMap](/hashmap/HashMap.png)
+![HashMap](./hashmap/HashMap.png)
 
 
 
@@ -18,31 +18,31 @@ HashMap:
 ### 向量
 结构名称|代码|实现
 :-|:-|:-
-向量|[Vector](/vector)|√|
+向量|[Vector](./vector)|√|
 
 ### 链表
 结构名称|代码|实现
 :-|:-|:-
-双向链表|[LinkedList](/lists/LinkedList)|√|
-环|[Ring](/lists/Ring)|√|
-跳跃表|[SkipList](/lists/SkipLists)||
+双向链表|[LinkedList](./lists/LinkedList)|√|
+环|[Ring](./lists/Ring)|√|
+跳跃表|[SkipList](./lists/SkipLists)||
 
 ### 串
 结构名称|代码|实现
 :-|:-|:-
-串|[String](/strings)|√|
+串|[String](./strings)|√|
 
 ### 树
 结构名称|代码|实现
 :-|:-|:-
-二叉树|[BinaryTree](/trees/BinaryTree)|√|
-BST|[BinarySearchTree](/trees/BinarySearchTree)|√|
-AVL|[AvlTree](/trees/AvlTree)||
-B树|[Btree](/trees/Btree)||
-红黑树|[RedBlackTree](/trees/RedBlackTree)||
+二叉树|[BinaryTree](./trees/BinaryTree)|√|
+BST|[BinarySearchTree](./trees/BinarySearchTree)|√|
+AVL|[AvlTree](./trees/AvlTree)||
+B树|[Btree](./trees/Btree)||
+红黑树|[RedBlackTree](./trees/RedBlackTree)||
 
 ### HashTable
 结构名称|代码|实现
 :-|:-|:-
-哈希表|[HashMap](/hashmap)|√|
+哈希表|[HashMap](./hashmap)|√|
 
