@@ -6,9 +6,10 @@ const (
 	CompareLess
 	CompareMore
 	LoadFactor        = 6.5
-	DefaultCapability = 1024
+	DefaultCapability = 16
 	DefaultB          = 10
 	BucketSize        = 8
+	BigLen            = 254 // Maximum length of size
 )
 
 type HashNode struct {
@@ -65,7 +66,7 @@ func hashFunc(key string, seed int) int {
 	return keyNum % seed
 }
 
-func (this *HashMap) Insert(k string, v interface{}) {
+func (this *HashMap) Set(k string, v interface{}) {
 	idx, isFind := _searchWithHot(this, k)
 	if isFind {
 		return
@@ -84,7 +85,7 @@ func (this *HashMap) Insert(k string, v interface{}) {
 	this.size++
 }
 
-func (this *HashMap) Delete(k string) {
+func (this *HashMap) Del(k string) {
 	idx, isFind := _searchWithHot(this, k)
 	if !isFind {
 		return
@@ -99,13 +100,17 @@ func (this *HashMap) Delete(k string) {
 	this.size--
 }
 
-func (this *HashMap) Search(k string) (interface{}, bool) {
+func (this *HashMap) Get(k string) (interface{}, bool) {
 	idx := _search(this, k)
 	if idx == -1 {
 		return nil, false
 	}
 
 	return this.bucket[idx].value, true
+}
+
+func (this *HashMap) Len() int {
+	return this.size
 }
 
 // Find the index from the bucket for a key
