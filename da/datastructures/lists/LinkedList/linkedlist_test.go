@@ -12,40 +12,71 @@ import (
 )
 
 // Return an example with datas "A,B,C,D,E,F"
-func NewExampleList() *arrayList {
-	list := New()
+func NewExampleList() *linkedList {
+	l := New(0)
 
 	st := []Item{"A", "B", "C", "D", "E", "F"}
 	for i, _ := range st {
-		list.Insert(st[i])
+		l.PushBack(st[i])
 	}
 
-	return list
+	return l
 }
 
 // 生成gv图
 func TestLinkedList(t *testing.T) {
 
-	list := NewExampleList()
+	l := NewExampleList()
 
 	buf := &bytes.Buffer{}
-	memviz.Map(buf, list)
+	memviz.Map(buf, l)
 
 	ioutil.WriteFile("./LinkedList.gv", buf.Bytes(), os.ModePerm)
 	exec.Command("dot", "-Tpng", "./LinkedList.gv", "-o", "./LinkedList.png").Run()
 }
 
-func TestInsert(t *testing.T) {
-	list := NewExampleList()
-	list.Insert(Item("G"))
+func TestPushBack(t *testing.T) {
+	l := NewExampleList()
+	l.PushBack(Item("G"))
 
-	assert.Equal(t, 7, list.Size())
+	assert.Equal(t, 7, l.Len())
 }
 
 func TestSearch(t *testing.T) {
-	list := NewExampleList()
+	l := NewExampleList()
 
-	bNode := list.Search("B")
+	bNode := l.Search("B")
 
-	assert.Equal(t, Item("C"), bNode.next.data)
+	assert.Equal(t, Item("B"), bNode.Data())
+}
+
+func TestInsert(t *testing.T) {
+	l := NewExampleList()
+
+	nodeF := l.Search("F")
+	if nodeF == nil {
+		assert.Fail(t, "Element 'F' is losing,check 'PushBack' function.")
+	}
+
+	l.Insert(Item("K"), nodeF)
+
+	//log.Printf("Range:%v \n", l.RangeFrom(nodeF.Data()))
+
+	assert.Equal(t, Item("K"), nodeF.next.Data())
+}
+
+func TestReverse(t *testing.T) {
+	l := NewExampleList()
+
+	bNode := l.Front()
+	assert.Equal(t, Item("A"), bNode.Data())
+	l.Reverse()
+
+	bNode = l.Front()
+	if bNode == nil {
+		assert.Fail(t, "Back element is nil")
+		return
+	}
+
+	assert.Equal(t, Item("F"), bNode.Data())
 }
