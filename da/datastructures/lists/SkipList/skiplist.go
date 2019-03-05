@@ -2,6 +2,7 @@
 package skiplist
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 )
@@ -76,14 +77,14 @@ func (this *SkipList) Insert(score float64, k, v interface{}) error {
 
 	// 从头节点front开始搜索,按level从高到低逐层查找直到最后一层,把需要更新的节点放入到updateNodes数组中.
 	x = this.front
-	for i := this.level; i >= 0; i-- {
+	for i := this.level - 1; i >= 0; i-- {
 		rank[i] = 0
 		if i != this.level-1 {
 			rank[i] = rank[i+1]
 		}
 
 		// 当当前遍历节点分数小于目标分数或者当前遍历节点key小于目标key值,继续遍历
-		for x.next[i].next != nil && (x.next[i].next.score < score && this.compareKey(k, x.next[i].next.key) < 0) {
+		for x.next[i].next != nil && (x.next[i].next.score < score || (x.next[i].next.score == score && this.compareKey(k, x.next[i].next.key) < 0)) {
 			rank[i] += x.next[i].span
 			x = x.next[i].next
 		}
@@ -144,7 +145,68 @@ func (this *SkipList) Insert(score float64, k, v interface{}) error {
 	return nil
 }
 
-func (this *SkipList) Delete(score float64, k interface{}) error { return nil }
+func (this *SkipList) Delete(score float64, k interface{}) error {
+	updates := make([]*Element, MAX_LEVEL)
+	x := new(Element)
+
+	x = this.front
+	// 从头查找需要删除的节点
+	for i := this.level - 1; i >= 0; i-- {
+		for x.next[i].next != nil && (x.next[i].next.score < score || (x.next[i].next.score == score && this.compareKey(x.next[i].next.key, k) < 0)) {
+			x = x.next[i].next
+		}
+		updates[i] = x
+	}
+
+	for i := this.level - 1; i >= 0; i-- {
+		if updates[i] != nil {
+			fmt.Printf("score:%0.2f k:%d \n", updates[i].score, updates[i].key)
+		}
+	}
+
+	// 二次复查最低level,保证待删除节点score和key与入参相同
+	if x == this.front {
+		return fmt.Errorf("Node was not exist")
+	}
+
+	x = x.next[0].next.prev
+	if x.score == score && this.compareKey(x.key, k) == 0 {
+		// 执行删除
+		// 1.更新span
+		// 假如把节点标识为(score,key)的话,skiplist底层的结构可简化为下图所示
+		//
+		// |等级\节点 |  front     1           2          3           4        5
+		// | level4 |   nil
+		// | level3 |   nil ->                                  (4.0,4)
+		// | level2 |   nil ->                       (3.0,3) -> (4.0,4)
+		// | level1 |   nil -> (1.0,1) -> (2.0,2) -> (3.0,3) -> (4.0,4) -> (5.0,5)
+		//
+		// 如果删除节点(4.0,4),位于level3的节点就空了意味着需要整个表需要降级到level2
+		// 其他没有涉及降级的节点只需要把跨度span更新
+		for i := 0; i < this.level; i++ {
+			if updates[i].prev == x {
+				updates[i].next[i].span += x.next[i].span - 1 // 连接前后两个跨度
+				updates[i].next[i].next = x.next[i].next
+			} else {
+				updates[i].next[i].span-- // 由于删除节点后,整个列表的长度减小,跨度span需要自减
+			}
+		}
+	}
+
+	if x.next[0].next.prev != nil {
+		x.next[0].next.prev = x.prev
+	}
+
+	// 收缩等级
+	for this.level > 1 && this.front.next[this.level-1].next.prev == nil {
+		this.level--
+	}
+
+	this.length--
+
+	DeleteNode(x)
+	return nil
+}
 
 // RandomLevel 函数会返回一个随机的等级,用于节点创建使用。其返回值区间是 [1,MAX_LEVEL]
 //
@@ -167,7 +229,7 @@ func (this *SkipList) RandomLevel() int {
 // Find 函数会查找指定score和k.若查询到,返回指定的节点.若未查询到,返回nil.
 // 查询支持score重复的情况,首先匹配分值score,再匹配key.
 //
-// Find returns a pointer to a element we are going to find by score and key.
+// Find returns a pointer to an element we are going to find by score and key.
 // This function supports storing the key with same score's value.
 func (this *SkipList) Find(score float64, k interface{}) *Element {
 

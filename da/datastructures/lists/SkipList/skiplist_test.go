@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
-	"sort"
 	"testing"
 
 	"github.com/bradleyjkemp/memviz"
@@ -36,9 +35,22 @@ func TestRandLevel(t *testing.T) {
 	for i, _ := range res {
 		res[i] = l.RandomLevel()
 	}
-	sort.Sort(sort.IntSlice(res))
 
-	t.Log(res)
+	// 统计每个level数量  按概率 P(leveln) = 0.25^n-1
+	reduce := make(map[int]int, MAX_LEVEL)
+	for i, _ := range res {
+		cnt, ok := reduce[res[i]]
+		if ok {
+			cnt++
+			reduce[res[i]] = cnt
+		} else {
+			reduce[res[i]] = 1
+		}
+	}
+	for level, cnt := range reduce {
+		fmt.Printf("level: %d cnt:%d \n", level, cnt)
+	}
+
 }
 
 // 生成gv图
@@ -56,15 +68,19 @@ func TestSkipList(t *testing.T) {
 func TestRange(t *testing.T) {
 	l := NewExampleList()
 
+	l.Delete(float64(11.0), int64(11))
+
 	for i := MAX_LEVEL; i > 0; i-- {
 		r := l.RangeLevel(i)
 		fmt.Printf("========= level:%d ========\n", i)
+		fmt.Printf("front>")
 		for _, node := range r {
 			if node.key == nil {
 				continue
 			}
 			fmt.Printf("(%.1f,%d)>", node.score, node.key.(int64))
 		}
+		fmt.Printf("rear(nil)")
 		fmt.Printf("\n")
 
 	}
@@ -92,6 +108,22 @@ func TestInsert(t *testing.T) {
 		assert.Fail(t, "Element '10' is losing,check 'Insert' function.")
 	}
 	assert.Equal(t, "testInsert", node.Value.(string))
+}
+
+func TestDelete(t *testing.T) {
+	l := NewExampleList()
+
+	err := l.Delete(float64(9.0), int64(9))
+	if err != nil {
+		assert.Fail(t, err.Error())
+		return
+	}
+
+	node := l.Find(float64(9.0), int64(9))
+	if node != nil {
+		assert.Fail(t, "Element '10' is failed to delete.")
+		return
+	}
 }
 
 //func TestReverse(t *testing.T) {
