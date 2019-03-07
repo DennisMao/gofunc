@@ -25,7 +25,7 @@ HashMap:
 :-|:-|:-
 双向链表|[LinkedList](./lists/LinkedList)|√|
 环|[Ring](./lists/Ring)|√|
-跳跃表|[SkipList](./lists/SkipLists)||
+跳跃表|[SkipList](./lists/SkipList)||
 
 ### 串
 结构名称|代码|实现
