@@ -6,7 +6,10 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+<<<<<<< HEAD
 	"sort"
+=======
+>>>>>>> f6da005d698eb739f093301078e91f1699b2101a
 	"testing"
 
 	"github.com/bradleyjkemp/memviz"
@@ -36,9 +39,28 @@ func TestRandLevel(t *testing.T) {
 	for i, _ := range res {
 		res[i] = l.RandomLevel()
 	}
+<<<<<<< HEAD
 	sort.Sort(sort.IntSlice(res))
 
 	t.Log(res)
+=======
+
+	// 统计每个level数量  按概率 P(leveln) = 0.25^n-1
+	reduce := make(map[int]int, MAX_LEVEL)
+	for i, _ := range res {
+		cnt, ok := reduce[res[i]]
+		if ok {
+			cnt++
+			reduce[res[i]] = cnt
+		} else {
+			reduce[res[i]] = 1
+		}
+	}
+	for level, cnt := range reduce {
+		fmt.Printf("level: %d cnt:%d \n", level, cnt)
+	}
+
+>>>>>>> f6da005d698eb739f093301078e91f1699b2101a
 }
 
 // 生成gv图
@@ -56,15 +78,28 @@ func TestSkipList(t *testing.T) {
 func TestRange(t *testing.T) {
 	l := NewExampleList()
 
+<<<<<<< HEAD
 	for i := MAX_LEVEL; i > 0; i-- {
 		r := l.RangeLevel(i)
 		fmt.Printf("========= level:%d ========\n", i)
+=======
+	l.Delete(float64(11.0), int64(11))
+
+	for i := MAX_LEVEL; i > 0; i-- {
+		r := l.RangeLevel(i)
+		fmt.Printf("========= level:%d ========\n", i)
+		fmt.Printf("front>")
+>>>>>>> f6da005d698eb739f093301078e91f1699b2101a
 		for _, node := range r {
 			if node.key == nil {
 				continue
 			}
 			fmt.Printf("(%.1f,%d)>", node.score, node.key.(int64))
 		}
+<<<<<<< HEAD
+=======
+		fmt.Printf("rear(nil)")
+>>>>>>> f6da005d698eb739f093301078e91f1699b2101a
 		fmt.Printf("\n")
 
 	}
@@ -94,6 +129,25 @@ func TestInsert(t *testing.T) {
 	assert.Equal(t, "testInsert", node.Value.(string))
 }
 
+<<<<<<< HEAD
+=======
+func TestDelete(t *testing.T) {
+	l := NewExampleList()
+
+	err := l.Delete(float64(9.0), int64(9))
+	if err != nil {
+		assert.Fail(t, err.Error())
+		return
+	}
+
+	node := l.Find(float64(9.0), int64(9))
+	if node != nil {
+		assert.Fail(t, "Element '10' is failed to delete.")
+		return
+	}
+}
+
+>>>>>>> f6da005d698eb739f093301078e91f1699b2101a
 //func TestReverse(t *testing.T) {
 //	l := NewExampleList()
 

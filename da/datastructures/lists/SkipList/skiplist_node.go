@@ -34,11 +34,21 @@ func CreateNode(level int, score float64, k, v interface{}) *Element {
 	return &newNode
 }
 
+<<<<<<< HEAD
+=======
+// DeleteNode 会重置给定的跳表节点对象。对象循环系统会在后续加入。对象循环系统可以收集待删除对象到对象池而不是直接通过
+// GC释放掉其内存。此举可以有效减少GC压力。
+//
+// DeleteNode can reset a specified element of the skiplisk.Object recycle system is moving on.
+// It can collect the node object we are going to delete with an object pool instead of freeing by
+// garbage collection.This system can effectually reduce the stress of GC(garbage collection).
+>>>>>>> f6da005d698eb739f093301078e91f1699b2101a
 func DeleteNode(node *Element) error {
 	if node == nil {
 		return fmt.Errorf("node is nil")
 	}
 
+<<<<<<< HEAD
 	// Connect previous node to the next.
 	if node.prev != nil {
 		level := len(node.prev.next)
@@ -47,6 +57,8 @@ func DeleteNode(node *Element) error {
 		}
 	}
 
+=======
+>>>>>>> f6da005d698eb739f093301078e91f1699b2101a
 	node.Reset()
 	return nil
 }
