@@ -1,6 +1,7 @@
-#sync.Cond的使用 
+# sync.Cond的使用 
 
-在多协程同时监听消费单个变量时候,我们通常会采用channel这种go的无锁通信来进行,但对于一些已有的结构体,我们还是需要进行加读写锁(RWmutex)共享的方式来消费。典型应用如下代码所示:
+Go的多协程间的同步有两种方式,一种是sync.Mutex和sync.RWMutex互斥锁与读写锁,另外一种就是今天要介绍的sync.Cond条件变量。典型应用如下代码所示:
+
 ```
 type Data struct {
 	Value Queue
