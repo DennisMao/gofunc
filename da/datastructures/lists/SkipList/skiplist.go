@@ -2,7 +2,10 @@
 package skiplist
 
 import (
+<<<<<<< HEAD
+=======
 	"fmt"
+>>>>>>> f6da005d698eb739f093301078e91f1699b2101a
 	"math/rand"
 	"time"
 )
@@ -77,14 +80,22 @@ func (this *SkipList) Insert(score float64, k, v interface{}) error {
 
 	// 从头节点front开始搜索,按level从高到低逐层查找直到最后一层,把需要更新的节点放入到updateNodes数组中.
 	x = this.front
+<<<<<<< HEAD
+	for i := this.level; i >= 0; i-- {
+=======
 	for i := this.level - 1; i >= 0; i-- {
+>>>>>>> f6da005d698eb739f093301078e91f1699b2101a
 		rank[i] = 0
 		if i != this.level-1 {
 			rank[i] = rank[i+1]
 		}
 
 		// 当当前遍历节点分数小于目标分数或者当前遍历节点key小于目标key值,继续遍历
+<<<<<<< HEAD
+		for x.next[i].next != nil && (x.next[i].next.score < score && this.compareKey(k, x.next[i].next.key) < 0) {
+=======
 		for x.next[i].next != nil && (x.next[i].next.score < score || (x.next[i].next.score == score && this.compareKey(k, x.next[i].next.key) < 0)) {
+>>>>>>> f6da005d698eb739f093301078e91f1699b2101a
 			rank[i] += x.next[i].span
 			x = x.next[i].next
 		}
@@ -145,6 +156,9 @@ func (this *SkipList) Insert(score float64, k, v interface{}) error {
 	return nil
 }
 
+<<<<<<< HEAD
+func (this *SkipList) Delete(score float64, k interface{}) error { return nil }
+=======
 func (this *SkipList) Delete(score float64, k interface{}) error {
 	updates := make([]*Element, MAX_LEVEL)
 	x := new(Element)
@@ -207,6 +221,7 @@ func (this *SkipList) Delete(score float64, k interface{}) error {
 	DeleteNode(x)
 	return nil
 }
+>>>>>>> f6da005d698eb739f093301078e91f1699b2101a
 
 // RandomLevel 函数会返回一个随机的等级,用于节点创建使用。其返回值区间是 [1,MAX_LEVEL]
 //
@@ -229,7 +244,11 @@ func (this *SkipList) RandomLevel() int {
 // Find 函数会查找指定score和k.若查询到,返回指定的节点.若未查询到,返回nil.
 // 查询支持score重复的情况,首先匹配分值score,再匹配key.
 //
+<<<<<<< HEAD
+// Find returns a pointer to a element we are going to find by score and key.
+=======
 // Find returns a pointer to an element we are going to find by score and key.
+>>>>>>> f6da005d698eb739f093301078e91f1699b2101a
 // This function supports storing the key with same score's value.
 func (this *SkipList) Find(score float64, k interface{}) *Element {
 
