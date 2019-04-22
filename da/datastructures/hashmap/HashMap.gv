@@ -1,0 +1,34 @@
+digraph structs {
+  node [shape=Mrecord];
+  3 [label="<name> HashNode |{<f0> key | \"\"} |{<f1> value | interface \{\}(nil)} |{<f2> next | *HashMap.HashNode(nil)}  "];
+  5 [label="<name> \"A\""];
+  4 [label="<name> HashNode |{<f0> key | \"A\"} |<f1> value|{<f2> next | *HashMap.HashNode(nil)}  "];
+  4:f1 -> 5:name;
+  7 [label="<name> \"B\""];
+  6 [label="<name> HashNode |{<f0> key | \"B\"} |<f1> value|{<f2> next | *HashMap.HashNode(nil)}  "];
+  6:f1 -> 7:name;
+  9 [label="<name> \"C\""];
+  8 [label="<name> HashNode |{<f0> key | \"C\"} |<f1> value|{<f2> next | *HashMap.HashNode(nil)}  "];
+  8:f1 -> 9:name;
+  11 [label="<name> \"D\""];
+  10 [label="<name> HashNode |{<f0> key | \"D\"} |<f1> value|{<f2> next | *HashMap.HashNode(nil)}  "];
+  10:f1 -> 11:name;
+  13 [label="<name> \"E\""];
+  12 [label="<name> HashNode |{<f0> key | \"E\"} |<f1> value|{<f2> next | *HashMap.HashNode(nil)}  "];
+  12:f1 -> 13:name;
+  15 [label="<name> \"F\""];
+  14 [label="<name> HashNode |{<f0> key | \"F\"} |<f1> value|{<f2> next | *HashMap.HashNode(nil)}  "];
+  14:f1 -> 15:name;
+  16 [label="<name> HashNode |{<f0> key | \"\"} |{<f1> value | interface \{\}(nil)} |{<f2> next | *HashMap.HashNode(nil)}  "];
+  2:<2index0> -> 3:name;
+  2:<2index1> -> 4:name;
+  2:<2index2> -> 6:name;
+  2:<2index3> -> 8:name;
+  2:<2index4> -> 10:name;
+  2:<2index5> -> 12:name;
+  2:<2index6> -> 14:name;
+  2:<2index7> -> 16:name;
+  2 [label="<name> []HashMap.HashNode |<2index0> 0|<2index1> 1|<2index2> 2|<2index3> 3|<2index4> 4|<2index5> 5|<2index6> 6|<2index7> 7 "];
+  1 [label="<name> HashMap |<f0> bucket|{<f1> size | 6} |{<f2> seed | 8} |{<f3> b | 0}  "];
+  1:f0 -> 2:name;
+}
