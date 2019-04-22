@@ -19,6 +19,7 @@
 |go/scanner|Go代码词法分析库|-|[Demo](/gosrc/scanner)|
 |go/parser|Go代码语法分析库|-|[Demo](/gosrc/parser)|
 |go/printer|Go代码生成库|-|[Demo](/gosrc/printer)|
+|net/http|http网络库|-|[Demo](/net/http)|
 
 ## 开源库
 
@@ -31,7 +32,7 @@
 |[google/btree](https://github.com/google/btree)|B树的Go实现|-|[Demo](/google/btree-example)|
 |[elastic.v5](https://github.com/olivere/elastic)|elasticsearch链接库|-|[Demo](/elasticsearch/README.md)|
 |[jaeger/client]()|jaeger的opentracing使用|-|[Demo](/jaeger/testUdpSender)|
-|[prometheus/exporter]prometheus的exporter编写|-|[Demo](/prometheus/exporter/README.md)|
+|[prometheus/exporter]()|prometheus的exporter编写|-|[Demo](/prometheus/exporter/README.md)|
 |[golang-lru]()|cache lru算法包使用|-|[Demo](/cache/README.md)|
 |[etcd-client]()|etcd客户端 v2 v3版本|-|[Demo](/etcd/README.md)|
 |[json-iterator/go](github.com/json-iterator/go)|高性能json库|-|[Demo](/json/README.md)|
@@ -40,4 +41,6 @@
 
 |项目名称|功能|Demo版本|Demo|
 |:-|:-|:-|:-|
-|[redisgo]|Redis的go实现|-|[Demo](/redisgo)|
+|[redisgo]()|Redis的go实现|-|[Demo](/redisgo)|
+|[da/datastructures]()|数据结构的go实现|-|[Code](/data/datastructures)|
+|[da/alogrithms]()|通用算法的go实现|-|[Code](/data/alogrithms)|
