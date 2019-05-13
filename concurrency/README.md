@@ -61,6 +61,10 @@ func ConcurrencyByChannelWithErrorControl(raw []string, subStr string) (int, err
 func SplitConcurrency(raw []string, subStr string, splitGranularity int) int
 ```
 
+#### 生产者消费者并行处理
+在共享内存channel的基础上,实现消费者与生产者并行执行,以加速整体任务的执行效率。
+
+
 ## 协程池
 协程池的思想近似于把`方法2:共享内存`的协程中的channel指针给保存到一个`sync.Pool`、Map或者一个新的channel里。方法2的协程变成`常驻`协程。当有业务传参来的时候,分配一个已启动的常驻协程的入口channel暴露给外部,传入数据进行处理。这样能大大减小协程的反复开启销毁的开销。
 
