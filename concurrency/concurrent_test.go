@@ -51,3 +51,9 @@ func TestConcurrencyByChannelWithErrorControl(t *testing.T) {
 func TestSplitConcurrency(t *testing.T) {
 	assert.Equal(t, 10, SplitConcurrency(testDataRawWith10Count, "a", 2))
 }
+
+func TestSplitMultiConcurrency(t *testing.T) {
+	assert.Equal(t, 10, SplitMultiConcurrency(testDataRawWith10Count, "a", 2))
+}
+
+

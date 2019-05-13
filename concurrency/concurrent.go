@@ -1,3 +1,4 @@
+
 package concurrency
 
 import (
@@ -264,6 +265,73 @@ func SplitConcurrency(raw []string, subStr string, splitGranularity int) int {
 	return cnt
 }
 
+// 切割,生产者消费者并行执行
+//
+// 生产者协程数: len(raw) / splitGranularity
+// 消费者协程数: 2
+// 共享方式:  channel
+func SplitMultiConcurrency(raw []string, subStr string, splitGranularity int) int {
+	if splitGranularity == 0 {
+		splitGranularity = 1
+	}
+
+	cnt := int(0)
+	cntMux := sync.Mutex{}
+
+	cntChan := make(chan int, len(raw))
+	lenRaw := len(raw)
+	lenConsumer := 2
+	lenProvider := lenRaw / splitGranularity
+	if lenRaw%2 != 0 && lenRaw > 0 {
+		lenProvider += 1
+	}
+	wgProvider := new(sync.WaitGroup)
+	wgConsumer := new(sync.WaitGroup)
+
+	// 启动消费者
+	for i := 0; i < lenConsumer; i++ {
+		wgConsumer.Add(1)
+		go func(wg *sync.WaitGroup) {
+			defer wg.Done()
+			for c := range cntChan {
+				cntMux.Lock()
+				cnt += c
+				cntMux.Unlock()
+			}
+		}(wgConsumer)
+	}
+
+	// 启动生产者
+	for i := 0; i < lenProvider; i++ {
+		st := i * splitGranularity
+		end := (i + 1) * splitGranularity
+		if end > lenRaw {
+			end = lenRaw
+		}
+
+		wgProvider.Add(1)
+		go func(wg *sync.WaitGroup, raw []string, subStr string) {
+			defer wg.Done()
+
+			for i, _ := range raw {
+				// 业务
+				c := strings.Count(raw[i], subStr)
+
+				// 收集结果
+				cntChan <- c
+			}
+
+		}(wgProvider, raw[st:end], subStr)
+	}
+
+	wgProvider.Wait()
+	close(cntChan)
+
+	wgConsumer.Wait()
+
+	return cnt
+}
+
 // 协程池
 //
 // 协程数: 自定义
@@ -272,3 +340,4 @@ func ConcurrencyByGoroutinePool() {
 	//TODO
 	//...
 }
+
