@@ -36,6 +36,7 @@
 |[golang-lru]()|cache lru算法包使用|-|[Demo](/cache/README.md)|
 |[etcd-client]()|etcd客户端 v2 v3版本|-|[Demo](/etcd/README.md)|
 |[json-iterator/go](github.com/json-iterator/go)|高性能json库|-|[Demo](/json/README.md)|
+|[radix]()|redis集群客户端|-|[Demo](/redis/radix)|
 
 ## 学习
 
