@@ -30,3 +30,6 @@ _test
 
 # output files
 *.out
+
+# mac
+.DS_Store

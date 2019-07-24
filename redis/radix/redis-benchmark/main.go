@@ -1,4 +1,4 @@
-// Redis集群压测工具
+// Redis集群压测工具,支持单机和集群,指令按照官方redis-benchmark编写
 // 使用方法
 //         1. go mod tidy
 // 		   2. go build
