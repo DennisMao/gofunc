@@ -1,14 +1,8 @@
 # goexperience
+goexperience 是自己平时使用的Go库使用demo和经验,还有部分自己学习过程中的设计项目。  
+使用说明:
+从Go 1.11开始,本工程下的涉及import的项目都采用go mod来管理,各位需要学习的同学可以先查看项目下的go mod文件查看版本。对于官方库的DEMO 默认按照最新版本(Go官方库本身有兼容性),如发现与新版有冲突无法编译的,请提issue告知,本人会尽快更新。希望本项目的DEMO能帮助大家,愿与各位Gopher共同学习,一起成长。
 
-## 数据结构
-|项目名称|功能|Demo版本|Demo|
-|:-|:-|:-|:-|
-|[da/datastructures]()|数据结构的go实现|-|[Code](/data/datastructures)|
-
-## 算法
-|项目名称|功能|Demo版本|Demo|
-|:-|:-|:-|:-|
-|[da/alogrithms]()|通用算法的go实现|-|[Code](/data/alogrithms)|
 
 ## 业务相关
 
@@ -53,8 +47,6 @@
 |[mysql/dump]()|mysql 热迁移dump协议库|-|[Demo](/mysql_dm/dump)|
 |[mysql/sqlparser]|sql解析库(以mysql为主)|-|[Demo](/mysql_dm/sqlparser)|
 
-## DL/ML/CV
-
 
 ## 学习
 
@@ -63,3 +55,16 @@
 |[redisgo]()|Redis的go实现|-|[Demo](/redisgo)|
 |[da/datastructures]()|数据结构的go实现|-|[Code](/data/datastructures)|
 |[da/alogrithms]()|通用算法的go实现|-|[Code](/data/alogrithms)|
+
+### DL/ML/CV
+
+### 数据结构
+|项目名称|功能|Demo版本|Demo|
+|:-|:-|:-|:-|
+|[da/datastructures]()|数据结构的go实现|-|[Code](/data/datastructures)|
+
+### 算法
+|项目名称|功能|Demo版本|Demo|
+|:-|:-|:-|:-|
+|[da/alogrithms]()|通用算法的go实现|-|[Code](/data/alogrithms)|
+
