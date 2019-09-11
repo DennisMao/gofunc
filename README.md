@@ -20,6 +20,10 @@
 |go/parser|Go代码语法分析库|-|[Demo](/gosrc/parser)|
 |go/printer|Go代码生成库|-|[Demo](/gosrc/printer)|
 |net/http|http网络库|-|[Demo](/net/http)|
+|sync/map|并发安全map|-|[Demo](/sync/map)|
+|sync/atomic|原子操作|-|[Demo](/sync/atomic)|
+|runtime/trace|trace库|-|[Demo](/runtime/trace)|
+|runtime/pprof|pprof库|-|[Demo](/runtime/pprof)|
 
 ## 开源库
 
@@ -37,6 +41,14 @@
 |[etcd-client]()|etcd客户端 v2 v3版本|-|[Demo](/etcd/README.md)|
 |[json-iterator/go](github.com/json-iterator/go)|高性能json库|-|[Demo](/json/README.md)|
 |[radix]()|redis集群客户端|-|[Demo](/redis/radix)|
+|[redigo/redis]()|redis单点&哨兵客户端|-|[Demo](/redis/redigo)|
+|[kafka/sarama]()|kafka集群客户端|-|[Demo](/kafka/sarama)|
+|[mysql/canal]()|mysql Binlog协议库|-|[Demo](/mysql_dm/canal)|
+|[mysql/dump]()|mysql 热迁移dump协议库|-|[Demo](/mysql_dm/dump)|
+
+
+## DL/ML/CV
+
 
 ## 学习
 
