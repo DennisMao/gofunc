@@ -5,7 +5,7 @@
 ## 基本类型
 
 ### SkipList 跳跃表
-
+```
 type SkipList struct{
     front,rear *Element // 首末节点(rear非论文标准)
     level int           // 当前等级
@@ -13,22 +13,24 @@ type SkipList struct{
     length int          // 长度
 
 }
-
+```
 
 ###  Elemenet 节点
-
+```
 type Element struct {
     key,value interface{}   // k,v存储元素(key非论文标准)
     score float64           // 分值
     next []ElementLevel     // 后继节点
     prev *Element           // 前驱节点(非论文标准)
 }
+```
 
+```
 type ElementLevel struct{
 	span int	// 该层跨越的节点数量(非论文标准)
 	next *Element
 }
-
+```
 
 ## ADT 抽象接口
 
