@@ -45,7 +45,7 @@ goexperience 是自己平时使用的Go库使用demo和经验,还有部分自己
 |[kafka/sarama]()|kafka集群客户端|-|[Demo](/kafka/sarama)|
 |[mysql/canal]()|mysql Binlog协议库|-|[Demo](/mysql_dm/canal)|
 |[mysql/dump]()|mysql 热迁移dump协议库|-|[Demo](/mysql_dm/dump)|
-|[mysql/sqlparser]|sql解析库(以mysql为主)|-|[Demo](/mysql_dm/sqlparser)|
+|[mysql/sqlparser]()|sql解析库(以mysql为主)|-|[Demo](/mysql_dm/sqlparser)|
 
 
 ## 学习
