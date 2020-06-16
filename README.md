@@ -63,6 +63,8 @@ GOPROXY=https://goproxy.cn go mod tidy
 |[da/alogrithms]()|通用算法的go实现|-|[Code](/data/alogrithms)|
 
 ### DL/ML/CV
+|项目名称|功能|Demo版本|Demo|
+|:-|:-|:-|:-|
 |[onnx-go](https://github.com/owulveryck/onnx-go)|神经网络连接库|-|[Code](/CV/onnx-go)|
 |[gocv](https://github.com/hybridgroup/gocv)|OpenCV4库|-|[Code](/CV/gocv)|
 
